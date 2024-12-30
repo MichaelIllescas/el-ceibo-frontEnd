@@ -1,0 +1,25 @@
+/* Dropdown anidado - posición y estilo */
+.dropdown-submenu {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-submenu > .dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -0.125rem; /* Ajuste fino para la alineación */
+  margin-left: 0;
+  display: none; /* Por defecto, los submenús están ocultos */
+}
+
+.dropdown-submenu:hover > .dropdown-menu {
+  display: block; /* Mostrar submenús al pasar el mouse */
+}
+
+/* Ajuste opcional: añadir un indicador para dropdowns anidados */
+.dropdown-submenu > .dropdown-item::after {
+  float: right;
+  margin-left: 0.5rem;
+  font-size: 0.8rem;
+  color: #6c757d; /* Color del indicador */
+}

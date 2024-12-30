@@ -1,0 +1,35 @@
+
+/* Estilo para el título */
+h1 {
+  font-size: 30px; /* Cambia el tamaño de la fuente de "Registrar Categoria" */
+  color: white; /* Asegura que el texto sea visible */
+  text-align: center; /* Centra el texto */
+}
+
+/* Estilo para el input y el textarea */
+input.form-control,
+textarea.form-control {
+  width: 300px; /* Establece un ancho que se ajusta al contenedor, menos los márgenes */
+  margin: 0 auto; /* Centra el input y textarea */
+  padding: 6px; /* Mantiene el padding dentro del campo */
+  box-sizing: border-box; /* Asegura que el padding no afecte al ancho total */
+}
+
+/* Estilo para el botón */
+.btn-celeste {
+  background-color: #456df1;
+  border-color: #ccc;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  margin-bottom: 20px;
+}
+
+.btn-celeste:hover {
+  background-color: #1477db;
+  border-color: #5a3dfd;
+  color: black;
+}
