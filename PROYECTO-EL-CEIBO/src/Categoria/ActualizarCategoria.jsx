@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Header from "../Navbar/Header";
-import Footer from "../Index/Footer";
+import Footer from "/src/Index/Footer";
 import axios from "axios";
 
 const ActualizarCategoria = () => {
