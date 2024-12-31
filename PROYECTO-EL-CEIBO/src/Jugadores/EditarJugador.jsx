@@ -8,11 +8,12 @@ const EditarJugador = ({ playerId, onClose, onUpdate }) => {
     dni: "",
     telefono: "",
     email: "",
-    categoriaId: "",
+    categoria: "", // Cambiado para manejar el nombre de la categoría
   });
-  const [categorias, setCategorias] = useState([]);
+  const [categorias, setCategorias] = useState([]); // Almacenar las categorías disponibles
   const [loading, setLoading] = useState(true);
 
+  // Cargar datos del jugador y categorías
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -20,7 +21,11 @@ const EditarJugador = ({ playerId, onClose, onUpdate }) => {
           axios.get(`http://192.168.0.103:8080/api/jugadores/${playerId}`),
           axios.get("http://192.168.0.103:8080/api/categorias"),
         ]);
-        setPlayer(playerResponse.data);
+
+        setPlayer({
+          ...playerResponse.data,
+          categoria: playerResponse.data.categoria.nombre, // Almacenar el nombre de la categoría
+        });
         setCategorias(categoriasResponse.data || []);
       } catch (error) {
         console.error("Error al cargar datos:", error);
@@ -32,17 +37,19 @@ const EditarJugador = ({ playerId, onClose, onUpdate }) => {
     fetchData();
   }, [playerId]);
 
+  // Manejar cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPlayer({ ...player, [name]: value });
   };
 
+  // Enviar los datos al backend
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
       .put(`http://192.168.0.103:8080/api/jugadores/${playerId}`, player)
       .then(() => {
-        onUpdate(); // Actualizar lista de jugadores
+        onUpdate(); // Refrescar la lista de jugadores
         onClose(); // Cerrar el modal
       })
       .catch((error) => console.error("Error al actualizar el jugador:", error));
@@ -125,30 +132,28 @@ const EditarJugador = ({ playerId, onClose, onUpdate }) => {
               <div className="mb-3">
                 <label>Categoría:</label>
                 <select
-                  name="categoriaId"
+                  name="categoria"
                   className="form-select"
-                  value={player.categoriaId}
+                  value={player.categoria}
                   onChange={handleChange}
                   required
                 >
                   <option value="">Seleccione una categoría</option>
                   {categorias.map((categoria) => (
-                    <option key={categoria.id} value={categoria.id}>
+                    <option key={categoria.id} value={categoria.nombre}>
                       {categoria.nombre}
                     </option>
                   ))}
                 </select>
               </div>
               <div className="text-center">
-              <button type="submit" className="btn btn-primary">
-                Actualizar
-              </button>
-              <button type="button" className="btn btn-secondary ms-2" onClick={onClose}>
-                Cancelar
-              </button>
-
+                <button type="submit" className="btn btn-primary">
+                  Actualizar
+                </button>
+                <button type="button" className="btn btn-secondary ms-2" onClick={onClose}>
+                  Cancelar
+                </button>
               </div>
-            
             </form>
           </div>
         </div>

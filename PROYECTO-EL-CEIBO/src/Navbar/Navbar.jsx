@@ -92,27 +92,14 @@ const NavBar = () => {
                         Registrar Jugador
                       </Link>
                     </li>
+                  
                     <li>
-                      <a className="dropdown-item" href="#">
-                        Actualizar Datos
-                      </a>
-                    </li>
-                    <li>
-                      <a className="dropdown-item" href="#">
+                      <Link to={"/cambioEstado"} className="dropdown-item">
                         Cambiar Estado
-                      </a>
+                      </Link>
                     </li>
                    
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Pagos de Jugadores
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Reporte de Jugadores
-                  </a>
-                </li>
+              
               </ul>
             </li>
 

@@ -13,6 +13,7 @@ import ActualizarCategoria from "../Categoria/ActualizarCategoria";
 import RegistroJugadores from "../Jugadores/RegistroJugadores";
 import VerJugadores from "../Jugadores/VerJugadores";
 import EditarJugador from "../Jugadores/EditarJugador";
+import CambioEstadoJugador from "../Jugadores/CambiarEstadoJugador";
 
 
 const Enrrutado = () => {
@@ -32,7 +33,7 @@ const Enrrutado = () => {
       <Route path="/registrarJugador" element={<RegistroJugadores />} />
       <Route path="/verJugadores" element={<VerJugadores />} />
       <Route path="/editarJugador" element={<EditarJugador />} />
-      
+      <Route path="/cambioEstado" element={<CambioEstadoJugador />} />
 
 
     </Routes>
