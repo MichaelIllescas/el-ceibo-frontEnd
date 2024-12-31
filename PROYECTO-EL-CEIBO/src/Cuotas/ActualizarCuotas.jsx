@@ -15,7 +15,7 @@ const ActualizarCuotas = () => {
   useEffect(() => {
     const fetchFeeTypes = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/cuotas");
+        const response = await axios.get("http://192.168.0.103:8080/api/cuotas");
         setFeeTypes(response.data);
       } catch (err) {
         console.error("Error al cargar los tipos de cuotas:", err);
@@ -55,7 +55,7 @@ const ActualizarCuotas = () => {
         monto: parseFloat(formData.amount),
       };
 
-      await axios.put(`http://localhost:8080/api/cuotas/${selectedFeeType.id}`, updatedFee);
+      await axios.put(`http://192.168.0.103:8080/api/cuotas/${selectedFeeType.id}`, updatedFee);
 
       setMessage({ text: "Tipo de cuota actualizado con éxito.", type: "success" });
 

@@ -17,7 +17,7 @@ const VerCuotas = () => {
   useEffect(() => {
     const fetchCuotas = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/cuotas");
+        const response = await axios.get("http://192.168.0.103:8080/api/cuotas");
 
         // Formatear fechas para mostrar en formato dd/MM/yyyy
         const formattedCuotas = response.data.map((cuota) => ({
@@ -51,7 +51,7 @@ const VerCuotas = () => {
     <>
       <Header />
       <div className="d-flex justify-content-center align-content-center pt-4">
-        <div className="mt-5 col-lg-6">
+        <div className="mt-5 col-lg-7">
           {loading ? (
             <p className="text-center">Cargando cuotas...</p>
           ) : error ? (

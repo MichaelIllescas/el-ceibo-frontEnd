@@ -17,7 +17,7 @@ const VerCategoria = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/categorias");
+        const response = await axios.get("http://192.168.0.103:8080/api/categorias");
         setCategorias(response.data); // Asignar las categorías al estado
       } catch (err) {
         console.error("Error al obtener las categorías:", err);

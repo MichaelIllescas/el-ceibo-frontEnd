@@ -83,14 +83,14 @@ const NavBar = () => {
               </a>
               <ul className="dropdown-menu" aria-labelledby="jugadoresDropdown">
                 <li>
-                  <a className="dropdown-item" href="#">
+                  <Link to={"/verJugadores"} className="dropdown-item">
                     Lista de Jugadores
-                  </a>
+                  </Link>
                 </li>
                 <li>
-                      <a className="dropdown-item" href="#">
+                      <Link to ={"/registrarJugador"} className="dropdown-item" >
                         Registrar Jugador
-                      </a>
+                      </Link>
                     </li>
                     <li>
                       <a className="dropdown-item" href="#">

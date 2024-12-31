@@ -28,7 +28,7 @@ const Login = () => {
       >
         <div className="text-center mb-3">
           <img
-            src="src/assets/img/logo-el-ceibo.jpg"
+            src="src/assets/img/logo-el-ceibo.png"
             alt="Logo"
             width="100"
             className="rounded-circle"

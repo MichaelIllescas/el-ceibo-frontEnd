@@ -10,6 +10,9 @@ import VerCategoria from "../Categoria/VerCategoria";
 import ActualizarCategoria from "../Categoria/ActualizarCategoria";
 // import VerSocios from "../Socios/VerSocios";
 // import RegistrarSocio from "../Socios/RegistrarSocio";
+import RegistroJugadores from "../Jugadores/RegistroJugadores";
+import VerJugadores from "../Jugadores/VerJugadores";
+import EditarJugador from "../Jugadores/EditarJugador";
 
 
 const Enrrutado = () => {
@@ -25,6 +28,12 @@ const Enrrutado = () => {
       <Route path="/actualizarCuotas" element={<ActualizarCuotas />} />
       {/* <Route path="/VerSocios" element={<VerSocios/>}/> */}
       {/* <Route path="/RegistrarSocio" element={<RegistrarSocio/>}/> */}
+
+      <Route path="/registrarJugador" element={<RegistroJugadores />} />
+      <Route path="/verJugadores" element={<VerJugadores />} />
+      <Route path="/editarJugador" element={<EditarJugador />} />
+      
+
 
     </Routes>
   );

@@ -1,5 +1,5 @@
 import Header from "../Navbar/Header";
-import Footer from "./Footer";
+import Footer from "../index/Footer";
 
 function App() {
   return (

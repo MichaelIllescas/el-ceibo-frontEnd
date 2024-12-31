@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./RegistrarCategoria.css";
 import NavBar from "/src/NavBar/NavBar";
-import Footer from "../Index/Footer";
+import Footer from "/src/Index/Footer";
 import axios from "axios";
 
 const RegistrarCategoria = () => {
@@ -21,7 +21,7 @@ const RegistrarCategoria = () => {
                 descripcion: descripcion,
             };
 
-            const response = await axios.post("http://localhost:8080/api/categorias", nuevaCategoria);
+            const response = await axios.post("http://192.168.0.103:8080/api/categorias", nuevaCategoria);
 
             setMensaje({ texto: "Categoría registrada con éxito.", tipo: "success" });
             console.log("Respuesta del servidor:", response.data);
