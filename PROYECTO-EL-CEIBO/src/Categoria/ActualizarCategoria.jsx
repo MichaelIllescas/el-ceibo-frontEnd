@@ -15,7 +15,9 @@ const ActualizarCategoria = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await axios.get("http://192.168.0.103:8080/api/categorias");
+        const response = await axios.get(
+          "http://localhost:8080/api/categorias"
+        );
         setCategorias(response.data); // Asignar categorías al estado
       } catch (err) {
         console.error("Error al cargar las categorías:", err);
@@ -31,7 +33,9 @@ const ActualizarCategoria = () => {
   // Manejar cambios en la categoría seleccionada
   const handleSelectChange = (e) => {
     const categoriaId = e.target.value;
-    const selected = categorias.find((categoria) => categoria.id === parseInt(categoriaId, 10));
+    const selected = categorias.find(
+      (categoria) => categoria.id === parseInt(categoriaId, 10)
+    );
     setSelectedCategoria(selected);
     setFormData({ type: selected.nombre, descripcion: selected.descripcion });
   };
@@ -45,7 +49,10 @@ const ActualizarCategoria = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedCategoria) {
-      setMessage({ text: "Por favor, selecciona una categoría.", type: "error" });
+      setMessage({
+        text: "Por favor, selecciona una categoría.",
+        type: "error",
+      });
       return;
     }
 
@@ -55,7 +62,10 @@ const ActualizarCategoria = () => {
         descripcion: formData.descripcion,
       };
 
-      await axios.put(`http://localhost:8080/api/categorias/${selectedCategoria.id}`, updatedCategoria);
+      await axios.put(
+        `http://localhost:8080/api/categorias/${selectedCategoria.id}`,
+        updatedCategoria
+      );
 
       setMessage({ text: "Categoría actualizada con éxito.", type: "success" });
 
@@ -63,7 +73,11 @@ const ActualizarCategoria = () => {
       setCategorias((prevCategorias) =>
         prevCategorias.map((cat) =>
           cat.id === selectedCategoria.id
-            ? { ...cat, nombre: formData.type, descripcion: formData.descripcion }
+            ? {
+                ...cat,
+                nombre: formData.type,
+                descripcion: formData.descripcion,
+              }
             : cat
         )
       );
@@ -74,7 +88,8 @@ const ActualizarCategoria = () => {
       console.error("Error al actualizar la categoría:", err);
       setMessage({
         text:
-          err.response?.data?.error || "Error al actualizar la categoría. Intente nuevamente.",
+          err.response?.data?.error ||
+          "Error al actualizar la categoría. Intente nuevamente.",
         type: "error",
       });
     }
@@ -119,10 +134,12 @@ const ActualizarCategoria = () => {
               {selectedCategoria && (
                 <div className="mb-3">
                   <p>
-                    <strong>Categoría actual:</strong> {selectedCategoria.nombre}
+                    <strong>Categoría actual:</strong>{" "}
+                    {selectedCategoria.nombre}
                   </p>
                   <p>
-                    <strong>Descripción actual:</strong> {selectedCategoria.descripcion}
+                    <strong>Descripción actual:</strong>{" "}
+                    {selectedCategoria.descripcion}
                   </p>
                 </div>
               )}
@@ -173,7 +190,11 @@ const ActualizarCategoria = () => {
               )}
 
               <div className="text-center">
-                <button type="submit" className="btn btn-primary" disabled={!selectedCategoria}>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={!selectedCategoria}
+                >
                   Guardar Cambios
                 </button>
               </div>

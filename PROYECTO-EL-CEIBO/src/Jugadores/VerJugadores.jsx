@@ -15,7 +15,7 @@ const VerJugadores = () => {
   // Función para obtener los jugadores desde el backend
   const fetchJugadores = async () => {
     try {
-      const response = await axios.get("http://192.168.0.103:8080/api/jugadores");
+      const response = await axios.get("http://localhost:8080/api/jugadores");
       setJugadores(response.data); // Asignar los jugadores al estado
     } catch (err) {
       console.error("Error al obtener los jugadores:", err);
@@ -51,7 +51,11 @@ const VerJugadores = () => {
           ) : error ? (
             <p className="text-center text-danger">{error}</p>
           ) : (
-            <TableGeneric titulo={"Ver Jugadores"} data={jugadores} actions={actions} />
+            <TableGeneric
+              titulo={"Ver Jugadores"}
+              data={jugadores}
+              actions={actions}
+            />
           )}
         </div>
       </div>

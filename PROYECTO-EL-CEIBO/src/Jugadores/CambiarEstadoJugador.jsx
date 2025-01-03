@@ -17,7 +17,9 @@ const CambioEstadoJugador = () => {
   // Función para obtener los jugadores desde el backend
   const fetchJugadores = async () => {
     try {
-      const response = await axios.get("http://192.168.0.103:8080/api/jugadores/estados");
+      const response = await axios.get(
+        "http://192.168.0.103:8080/api/jugadores/estados"
+      );
       setJugadores(response.data);
     } catch (err) {
       console.error("Error al obtener los jugadores:", err);
@@ -60,12 +62,17 @@ const CambioEstadoJugador = () => {
     ...jugador,
     acciones: (
       <button
-        className={`btn ${jugador.estado=="ACTIVO"  ? "btn-danger" : "btn-success"} me-2`}
+        className={`btn ${
+          jugador.estado == "ACTIVO" ? "btn-danger" : "btn-success"
+        } me-2`}
         onClick={() =>
-          handleActionClick(jugador, jugador.estado=="ACTIVO" ? "deshabilitar" : "habilitar")
+          handleActionClick(
+            jugador,
+            jugador.estado == "ACTIVO" ? "deshabilitar" : "habilitar"
+          )
         }
       >
-        {jugador.estado=="ACTIVO" ? "Deshabilitar" : "Habilitar"}
+        {jugador.estado == "ACTIVO" ? "Deshabilitar" : "Habilitar"}
       </button>
     ),
   }));
@@ -80,7 +87,10 @@ const CambioEstadoJugador = () => {
           ) : error ? (
             <p className="text-center text-danger">{error}</p>
           ) : (
-            <TableGeneric titulo={"Estado de los Jugadores"} data={jugadoresConAcciones} />
+            <TableGeneric
+              titulo={"Estado de los Jugadores"}
+              data={jugadoresConAcciones}
+            />
           )}
         </div>
       </div>

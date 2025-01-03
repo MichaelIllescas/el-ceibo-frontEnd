@@ -52,7 +52,9 @@ const EditarJugador = ({ playerId, onClose, onUpdate }) => {
         onUpdate(); // Refrescar la lista de jugadores
         onClose(); // Cerrar el modal
       })
-      .catch((error) => console.error("Error al actualizar el jugador:", error));
+      .catch((error) =>
+        console.error("Error al actualizar el jugador:", error)
+      );
   };
 
   if (loading) {
@@ -70,7 +72,11 @@ const EditarJugador = ({ playerId, onClose, onUpdate }) => {
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Editar Jugador</h5>
-            <button type="button" className="btn-close" onClick={onClose}></button>
+            <button
+              type="button"
+              className="btn-close"
+              onClick={onClose}
+            ></button>
           </div>
           <div className="modal-body">
             <form onSubmit={handleSubmit}>
@@ -150,7 +156,11 @@ const EditarJugador = ({ playerId, onClose, onUpdate }) => {
                 <button type="submit" className="btn btn-primary">
                   Actualizar
                 </button>
-                <button type="button" className="btn btn-secondary ms-2" onClick={onClose}>
+                <button
+                  type="button"
+                  className="btn btn-secondary ms-2"
+                  onClick={onClose}
+                >
                   Cancelar
                 </button>
               </div>

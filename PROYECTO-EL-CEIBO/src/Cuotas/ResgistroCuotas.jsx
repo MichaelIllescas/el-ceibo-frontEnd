@@ -8,8 +8,8 @@ const RegisterFeeForm = () => {
     type: "",
     amount: "",
   });
-  const [message, setMessage] = useState(null); 
-  const [loading, setLoading] = useState(false); 
+  const [message, setMessage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -21,7 +21,7 @@ const RegisterFeeForm = () => {
     setMessage(null); // Limpiar mensaje previo
 
     try {
-      const response = await axios.post("http://192.168.0.103:8080/api/cuotas", {
+      const response = await axios.post("http://localhost:8080/api/cuotas", {
         tipo: formData.type, // Ajuste para coincidir con los nombres de los campos en el backend
         monto: parseFloat(formData.amount), // Asegurar que el monto sea numérico
         fechaRegistro: new Date().toISOString(), // Opcional: Puedes agregar esto desde el frontend si es necesario
@@ -31,10 +31,14 @@ const RegisterFeeForm = () => {
       setFormData({ type: "", amount: "" }); // Limpiar formulario tras el éxito
       console.log("Respuesta del servidor:", response.data);
     } catch (error) {
-      console.error("Error al registrar la cuota:", error.response || error.message);
+      console.error(
+        "Error al registrar la cuota:",
+        error.response || error.message
+      );
       setMessage({
         text:
-          error.response?.data?.error || "Error al registrar la cuota. Verifique los datos ingresados.",
+          error.response?.data?.error ||
+          "Error al registrar la cuota. Verifique los datos ingresados.",
         type: "error",
       });
     } finally {
@@ -101,7 +105,11 @@ const RegisterFeeForm = () => {
 
           {/* Botón de registro */}
           <div className="text-center">
-            <button type="submit" className="btn btn-primary" disabled={loading}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              disabled={loading}
+            >
               {loading ? "Registrando..." : "Registrar Cuota"}
             </button>
           </div>

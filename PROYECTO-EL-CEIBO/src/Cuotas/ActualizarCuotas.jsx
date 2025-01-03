@@ -15,11 +15,13 @@ const ActualizarCuotas = () => {
   useEffect(() => {
     const fetchFeeTypes = async () => {
       try {
-        const response = await axios.get("http://192.168.0.103:8080/api/cuotas");
+        const response = await axios.get("http://localhost:8080/api/cuotas");
         setFeeTypes(response.data);
       } catch (err) {
         console.error("Error al cargar los tipos de cuotas:", err);
-        setError("No se pudieron cargar los tipos de cuotas. Intente nuevamente.");
+        setError(
+          "No se pudieron cargar los tipos de cuotas. Intente nuevamente."
+        );
       } finally {
         setLoading(false);
       }
@@ -31,7 +33,9 @@ const ActualizarCuotas = () => {
   // Manejar cambios en el tipo de cuota seleccionado
   const handleSelectChange = (e) => {
     const feeTypeId = e.target.value;
-    const selected = feeTypes.find((feeType) => feeType.id === parseInt(feeTypeId, 10));
+    const selected = feeTypes.find(
+      (feeType) => feeType.id === parseInt(feeTypeId, 10)
+    );
     setSelectedFeeType(selected);
     setFormData({ type: selected.tipo, amount: selected.monto });
   };
@@ -45,7 +49,10 @@ const ActualizarCuotas = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!selectedFeeType) {
-      setMessage({ text: "Por favor, selecciona un tipo de cuota.", type: "error" });
+      setMessage({
+        text: "Por favor, selecciona un tipo de cuota.",
+        type: "error",
+      });
       return;
     }
 
@@ -55,14 +62,22 @@ const ActualizarCuotas = () => {
         monto: parseFloat(formData.amount),
       };
 
-      await axios.put(`http://192.168.0.103:8080/api/cuotas/${selectedFeeType.id}`, updatedFee);
+      await axios.put(
+        `http://192.168.0.103:8080/api/cuotas/${selectedFeeType.id}`,
+        updatedFee
+      );
 
-      setMessage({ text: "Tipo de cuota actualizado con éxito.", type: "success" });
+      setMessage({
+        text: "Tipo de cuota actualizado con éxito.",
+        type: "success",
+      });
 
       // Actualizar la lista de cuotas en el estado
       setFeeTypes((prevFeeTypes) =>
         prevFeeTypes.map((fee) =>
-          fee.id === selectedFeeType.id ? { ...fee, tipo: formData.type, monto: formData.amount } : fee
+          fee.id === selectedFeeType.id
+            ? { ...fee, tipo: formData.type, monto: formData.amount }
+            : fee
         )
       );
 
@@ -70,7 +85,10 @@ const ActualizarCuotas = () => {
       setFormData({ type: "", amount: "" }); // Limpiar formulario
     } catch (err) {
       console.error("Error al actualizar el tipo de cuota:", err);
-      setMessage({ text: "Error al actualizar el tipo de cuota. Intente nuevamente.", type: "error" });
+      setMessage({
+        text: "Error al actualizar el tipo de cuota. Intente nuevamente.",
+        type: "error",
+      });
     }
   };
 
@@ -116,7 +134,8 @@ const ActualizarCuotas = () => {
                     <strong>Tipo actual:</strong> {selectedFeeType.tipo}
                   </p>
                   <p>
-                    <strong>Monto actual:</strong> ${selectedFeeType.monto.toFixed(2)}
+                    <strong>Monto actual:</strong> $
+                    {selectedFeeType.monto.toFixed(2)}
                   </p>
                 </div>
               )}
@@ -124,7 +143,6 @@ const ActualizarCuotas = () => {
               {/* Formulario para editar */}
               {selectedFeeType && (
                 <>
-                
                   <div className="mb-3">
                     <label htmlFor="amount" className="form-label">
                       Nuevo Monto
@@ -156,7 +174,11 @@ const ActualizarCuotas = () => {
               )}
 
               <div className="text-center">
-                <button type="submit" className="btn btn-primary" disabled={!selectedFeeType}>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={!selectedFeeType}
+                >
                   Guardar Cambios
                 </button>
               </div>

@@ -14,16 +14,16 @@ import RegistroJugadores from "../Jugadores/RegistroJugadores";
 import VerJugadores from "../Jugadores/VerJugadores";
 import EditarJugador from "../Jugadores/EditarJugador";
 import CambioEstadoJugador from "../Jugadores/CambiarEstadoJugador";
-
+import RegistrarPago from "../Pagos/RegistrarPago ";
 
 const Enrrutado = () => {
   return (
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/index" element={<Index />} />
-      <Route path="/RegistarCategoria" element={<RegistrarCategoria/>}/>
-      <Route path="/VerCategoria" element={<VerCategoria/>}/>
-      <Route path="/ActualizarCategoria" element={<ActualizarCategoria/>}/>
+      <Route path="/RegistarCategoria" element={<RegistrarCategoria />} />
+      <Route path="/VerCategoria" element={<VerCategoria />} />
+      <Route path="/ActualizarCategoria" element={<ActualizarCategoria />} />
       <Route path="/verCuotas" element={<VerCuotas />} />
       <Route path="/registrarCuota" element={<RegistrarCuota />} />
       <Route path="/actualizarCuotas" element={<ActualizarCuotas />} />
@@ -35,7 +35,7 @@ const Enrrutado = () => {
       <Route path="/editarJugador" element={<EditarJugador />} />
       <Route path="/cambioEstado" element={<CambioEstadoJugador />} />
 
-
+      <Route path="/registrarPago" element={<RegistrarPago />} />
     </Routes>
   );
 };

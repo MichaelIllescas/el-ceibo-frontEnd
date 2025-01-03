@@ -205,9 +205,9 @@ const NavBar = () => {
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="pagosDropdown">
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <Link to={"/registrarPago"} className="dropdown-item">
                       <i className="fas fa-plus-circle"></i> Registrar Pago
-                    </a>
+                    </Link>
                   </li>
                   <li>
                     <a className="dropdown-item" href="#">

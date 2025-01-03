@@ -10,14 +10,12 @@ const VerCuotas = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const actions = [
-    
-  ];
+  const actions = [];
 
   useEffect(() => {
     const fetchCuotas = async () => {
       try {
-        const response = await axios.get("http://192.168.0.103:8080/api/cuotas");
+        const response = await axios.get("http://localhost:8080/api/cuotas");
 
         // Formatear fechas para mostrar en formato dd/MM/yyyy
         const formattedCuotas = response.data.map((cuota) => ({
@@ -57,7 +55,11 @@ const VerCuotas = () => {
           ) : error ? (
             <p className="text-center text-danger">{error}</p>
           ) : (
-            <TableGeneric titulo={"Ver Cuotas Registradas"} data={cuotas} actions={actions} />
+            <TableGeneric
+              titulo={"Ver Cuotas Registradas"}
+              data={cuotas}
+              actions={actions}
+            />
           )}
         </div>
       </div>

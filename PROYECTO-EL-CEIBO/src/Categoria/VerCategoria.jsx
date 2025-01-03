@@ -10,14 +10,14 @@ const VerCategoria = () => {
   const [loading, setLoading] = useState(true); // Estado para manejar el spinner o carga
   const [error, setError] = useState(null); // Estado para manejar errores
 
-  const actions = [
-    
-  ];
+  const actions = [];
 
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await axios.get("http://192.168.0.103:8080/api/categorias");
+        const response = await axios.get(
+          "http://localhost:8080/api/categorias"
+        );
         setCategorias(response.data); // Asignar las categorías al estado
       } catch (err) {
         console.error("Error al obtener las categorías:", err);
@@ -40,7 +40,11 @@ const VerCategoria = () => {
           ) : error ? (
             <p className="text-center text-danger">{error}</p>
           ) : (
-            <TableGeneric titulo={"Ver Categorías"} data={categorias} actions={actions} />
+            <TableGeneric
+              titulo={"Ver Categorías"}
+              data={categorias}
+              actions={actions}
+            />
           )}
         </div>
       </div>
