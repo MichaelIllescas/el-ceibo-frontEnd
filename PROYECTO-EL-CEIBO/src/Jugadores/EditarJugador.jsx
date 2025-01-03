@@ -18,8 +18,8 @@ const EditarJugador = ({ playerId, onClose, onUpdate }) => {
     const fetchData = async () => {
       try {
         const [playerResponse, categoriasResponse] = await Promise.all([
-          axios.get(`http://192.168.0.103:8080/api/jugadores/${playerId}`),
-          axios.get("http://192.168.0.103:8080/api/categorias"),
+          axios.get(`http://localhost:8080/api/jugadores/${playerId}`),
+          axios.get("http://localhost:8080/api/categorias"),
         ]);
 
         setPlayer({
@@ -47,7 +47,7 @@ const EditarJugador = ({ playerId, onClose, onUpdate }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .put(`http://192.168.0.103:8080/api/jugadores/${playerId}`, player)
+      .put(`http://localhost:8080/api/jugadores/${playerId}`, player)
       .then(() => {
         onUpdate(); // Refrescar la lista de jugadores
         onClose(); // Cerrar el modal

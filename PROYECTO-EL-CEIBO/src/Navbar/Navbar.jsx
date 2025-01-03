@@ -45,16 +45,12 @@ const NavBar = () => {
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="sociosDropdown">
                   <li>
-                    <Link to="/VerSocios" className="dropdown-item" href="#">
+                    <Link to="/VerSocios" className="dropdown-item">
                       <i className="fas fa-list"></i> Lista de Socios
                     </Link>
                   </li>
                   <li>
-                    <Link
-                      to="/RegistrarSocio"
-                      className="dropdown-item"
-                      href="#"
-                    >
+                    <Link to="/RegistrarSocio" className="dropdown-item">
                       <i className="fas fa-user-plus"></i> Registrar Socio
                     </Link>
                   </li>
@@ -210,21 +206,16 @@ const NavBar = () => {
                     </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <Link to={"/ListadoPagosGeneral"} className="dropdown-item">
                       <i className="fas fa-eye"></i> Ver Pagos Realizados
-                    </a>
+                    </Link>
                   </li>
+
                   <li>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-exclamation-circle"></i> Consultar
-                      Deudas
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-user"></i> Reporte de Pagos Por
-                      Jugador
-                    </a>
+                    <Link to={"/filtrarHistorial"} className="dropdown-item">
+                      <i className="fas fa-user"></i> Historial de Pagos Por
+                      Jugador/Socio
+                    </Link>
                   </li>
                   <li>
                     <a className="dropdown-item" href="#">

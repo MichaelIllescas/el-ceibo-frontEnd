@@ -63,7 +63,7 @@ const ActualizarCuotas = () => {
       };
 
       await axios.put(
-        `http://192.168.0.103:8080/api/cuotas/${selectedFeeType.id}`,
+        `http://localhost:8080/api/cuotas/${selectedFeeType.id}`,
         updatedFee
       );
 

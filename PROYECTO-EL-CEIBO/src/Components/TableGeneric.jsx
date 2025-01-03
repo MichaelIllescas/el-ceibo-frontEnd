@@ -1,7 +1,11 @@
 import React, { useState, useMemo } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const TableGeneric = ({ titulo = "Título de la tabla", data, actions = [] }) => {
+const TableGeneric = ({
+  titulo = "Título de la tabla",
+  data,
+  actions = [],
+}) => {
   const [filterInput, setFilterInput] = useState(""); // Estado del filtro
   const [currentPage, setCurrentPage] = useState(1); // Estado de la página actual
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" }); // Estado de ordenamiento
@@ -37,8 +41,12 @@ const TableGeneric = ({ titulo = "Título de la tabla", data, actions = [] }) =>
   const sortedData = useMemo(() => {
     if (sortConfig.key) {
       return [...filteredData].sort((a, b) => {
-        const aValue = a[sortConfig.key] ? a[sortConfig.key].toString().toLowerCase() : "";
-        const bValue = b[sortConfig.key] ? b[sortConfig.key].toString().toLowerCase() : "";
+        const aValue = a[sortConfig.key]
+          ? a[sortConfig.key].toString().toLowerCase()
+          : "";
+        const bValue = b[sortConfig.key]
+          ? b[sortConfig.key].toString().toLowerCase()
+          : "";
 
         if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
         if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
@@ -112,7 +120,10 @@ const TableGeneric = ({ titulo = "Título de la tabla", data, actions = [] }) =>
           </div>
         ))}
       </div>
-      <div className="table-responsive" style={{ overflowX: "auto", maxWidth: "100%" }}>
+      <div
+        className="table-responsive"
+        style={{ overflowX: "auto", maxWidth: "100%" }}
+      >
         <table className="table table-bordered table-striped table-sm text-center">
           <thead>
             <tr>
@@ -156,10 +167,13 @@ const TableGeneric = ({ titulo = "Título de la tabla", data, actions = [] }) =>
                     {actions.map((action, actionIndex) => (
                       <button
                         key={actionIndex}
-                        className={`btn btn-sm ${action.className || "btn-primary"} me-2`}
+                        className={`btn btn-sm ${
+                          action.className || "btn-primary"
+                        } me-2`}
                         onClick={() => action.onClick(row)}
                       >
-                        {action.icon && React.createElement(action.icon)} {action.label}
+                        {action.icon && React.createElement(action.icon)}{" "}
+                        {action.label}
                       </button>
                     ))}
                   </td>
