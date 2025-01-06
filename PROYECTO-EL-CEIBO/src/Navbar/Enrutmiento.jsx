@@ -21,6 +21,8 @@ import CambiarEstadoSocio from "../Socios/CambiarEstadoSocio"
 import FiltrarPagosPorCategoria from "../Pagos/FiltrarPagosPorCategoria";
 import FiltrarJugadoresPorCategoria from "../Jugadores/ListadoDeJugadores";
 import VerPagosPorPeriodo from "../Pagos/PagosPorPeriodo";
+import GraficoRecaudaciones from "../Recaudaciones/RecaudacionesAnuales";
+import VerRecaudacionesTrimestrales from "../Recaudaciones/VerRecaudacionesTrimestrales ";
 
 const Enrrutado = () => {
   return (
@@ -49,6 +51,11 @@ const Enrrutado = () => {
       <Route path="/ListadoPagosGeneral" element={<VerListadoGeneralPagos />} />
       <Route path="/filtrarHistorial" element={<FiltrarHistorial />} />
       <Route path="/filtrarPagoPorCategoria" element={<VerPagosPorPeriodo/>}></Route>
+
+      <Route path="/recaudacionesAnuales" element={<GraficoRecaudaciones/>}></Route>
+      <Route path="/recaudacionTrimestral" element={<VerRecaudacionesTrimestrales/>}></Route>
+
+
     </Routes>
   );
 };

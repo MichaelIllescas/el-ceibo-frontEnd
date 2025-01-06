@@ -252,27 +252,16 @@ const NavBar = () => {
                   aria-labelledby="recaudacionesDropdown"
                 >
                   <li>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-eye"></i> Ver Recaudaciones
-                    </a>
+                    <Link to={"/recaudacionesAnuales"} className="dropdown-item" >
+                      <i className="fas fa-eye"></i> Recaudaciones Menusales
+                    </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-chart-line"></i> Consultar Totales
-                    </a>
+                    <Link to={"/recaudacionTrimestral"} className="dropdown-item" >
+                      <i className="fas fa-chart-line"></i> Recaudaciones Trimestrales
+                    </Link>
                   </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-th-list"></i> Recaudación Por
-                      Categoría
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-calendar-alt"></i> Recaudación Por
-                      Periodo
-                    </a>
-                  </li>
+               
                 </ul>
               </li>
 
