@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Header from "../Navbar/Header";
+import axios from "axios";
 
 const RegistrarSocio = () => {
   const [formData, setFormData] = useState({
@@ -18,16 +19,17 @@ const RegistrarSocio = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value,
+      [name]: value.trim(), // Eliminar espacios en blanco
     });
   };
 
   // Manejar el envío del formulario
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validación básica
-    if (!formData.nombre || !formData.apellido || !formData.dni) {
+    // Validación básica en el frontend
+    const { nombre, apellido, dni, direccion, telefono, email } = formData;
+    if (!nombre || !apellido || !dni || !direccion || !telefono || !email) {
       setMessage({
         text: "Por favor, completa todos los campos obligatorios.",
         type: "error",
@@ -35,17 +37,61 @@ const RegistrarSocio = () => {
       return;
     }
 
-    setMessage({ text: "Socio registrado con éxito.", type: "success" });
+    try {
+      const response = await axios.post(
+        "http://localhost:8080/api/socios", // URL del backend
+        {
+          ...formData,
+          estado: "ACTIVO", // Si este campo es obligatorio en el backend
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
-    // Aquí podrías agregar la lógica para enviar los datos a un backend
+      // Mostrar mensaje de éxito
+      setMessage({
+        text: "Socio registrado con éxito.",
+        type: "success",
+      });
+
+  
+      // Limpiar los campos del formulario
+      setFormData({
+        nombre: "",
+        apellido: "",
+        dni: "",
+        direccion: "",
+        telefono: "",
+        email: "",
+      });
+    } catch (error) {
+      
+
+      // Manejar errores específicos
+      if (error.response) {
+        const serverMessage = error.response.data.message || "Error desconocido en el servidor.";
+        setMessage({
+          text: `Error del servidor: ${serverMessage}`,
+          type: "error",
+        });
+      } else {
+        setMessage({
+          text: "No se pudo conectar con el servidor.",
+          type: "error",
+        });
+      }
+    }
   };
 
   return (
     <>
       <Header />
-      <div className="mt-3 pt-3">
-        <div className="mt-5 pt-5">
-          <div className="col-lg-6 col-md-8 bg-black shadow-sm p-4 rounded mx-auto mt-10 text-white">
+      <div className="pt-1">
+        <div className="mt-5 pt-3">
+          <div className="col-lg-8 col-md-8 bg-black shadow-sm p-4 rounded mx-auto mt-10 text-white mt-5 py-4">
             <h3 className="text-center mb-3">Registrar Socio</h3>
             <form onSubmit={handleSubmit}>
               <div className="row g-3">
@@ -102,6 +148,7 @@ const RegistrarSocio = () => {
                     value={formData.direccion}
                     onChange={handleInputChange}
                     className="form-control"
+                    required
                   />
                 </div>
                 <div className="col-md-6">
@@ -115,6 +162,7 @@ const RegistrarSocio = () => {
                     value={formData.telefono}
                     onChange={handleInputChange}
                     className="form-control"
+                    required
                   />
                 </div>
                 <div className="col-md-6">
@@ -128,6 +176,7 @@ const RegistrarSocio = () => {
                     value={formData.email}
                     onChange={handleInputChange}
                     className="form-control"
+                    required
                   />
                 </div>
               </div>

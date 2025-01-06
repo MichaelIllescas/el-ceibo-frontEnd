@@ -1,64 +1,100 @@
+import React, { useEffect, useState } from "react";
 import Header from "../Navbar/Header";
 import TableGeneric from "/src/Components/TableGeneric";
-
-import { FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
-
-const sampleData = [
-  { id: 1, name: "John Doe", age: 30, email: "john@example.com" },
-  { id: 2, name: "Jane Smith", age: 25, email: "jane@example.com" },
-  { id: 3, name: "Alice Johnson", age: 35, email: "alice@example.com" },
-  { id: 3, name: "Alice Johnson", age: 35, email: "alice@example.com" },
-  { id: 3, name: "Alice Johnson", age: 35, email: "alice@example.com" }
-  
-];
-
-const actions = [
-  {
-   
-    icon: FaEdit,
-    className: "btn-primary",
-    onClick: (row) => alert(`Editar: ${JSON.stringify(row)}`),
-  },
-  {
-    
-    icon: FaTrash,
-    className: "btn-danger",
-    onClick: (row) => {
-      const confirmDelete = window.confirm(
-        `¿Estás seguro de eliminar el registro? ${JSON.stringify(row)}`
-      );
-      if (confirmDelete) alert(`Eliminado: ${JSON.stringify(row)}`);
-    },
-  },
-  {
-    
-    icon: FaInfoCircle,
-    className: "btn-info",
-    onClick: (row) => alert(`Ver detalles: ${JSON.stringify(row)}`),
-  },
-];
-
-
-
+import { FaEdit } from "react-icons/fa";
+import axios from "axios";
+import ActualizarSocio from "./ActualizarSocio";
 
 function VerSocios() {
+  const [socios, setSocios] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [socioId, setSocioId] = useState(null); // Estado para manejar el ID del socio seleccionado
+  const [showModal, setShowModal] = useState(false); // Controla la visibilidad del modal
+
+  useEffect(() => {
+    const fetchSocios = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/socios");
+        setSocios(response.data);
+      } catch (err) {
+        setError("Error al obtener los datos.");
+        console.error("Error al obtener los socios:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSocios();
+  }, []);
+
+  const handleEditClick = (row) => {
+    setSocioId(row.id); // Establece el ID del socio seleccionado
+    setShowModal(true); // Muestra el modal
+  };
+
+  const handleModalClose = () => {
+    setShowModal(false); // Oculta el modal
+    setSocioId(null); // Limpia el ID seleccionado
+  };
+
+  const handleUpdate = async () => {
+    // Refresca la lista de socios después de la actualización
+    try {
+      const response = await axios.get("http://localhost:8080/api/socios");
+      setSocios(response.data);
+    } catch (err) {
+      console.error("Error al actualizar la lista de socios:", err);
+    }
+  };
+
+  const actions = [
+    {
+      label: "Editar",
+      className: "btn-warning m-auto",
+      onClick: handleEditClick,
+      
+    },
+  ];
+
   return (
     <>
       <Header />
-      <div className="d-flex justify-content-center align-content-center pt-4"> 
-  
-  <div className="mt-5 col-lg-6">
-
-  
-      <TableGeneric titulo ={"Ver Socios Registrados"} data={sampleData} actions={actions} />;
-
+      <div className="container mt-4 mx-auto pt-3">
+        <div
+          className="d-flex flex-column align-items-center justify-content-start"
+          style={{
+            marginTop: "20px", // Baja el contenedor del nav
+          }}
+        >
+          {/* Contenedor de la tabla */}
+          <div className="w-100" >
+            {loading ? (
+              <p>Cargando datos...</p>
+            ) : error ? (
+              <p className="text-danger">{error}</p>
+            ) : (
+              
+                <TableGeneric
+                  titulo={"Ver Socios Registrados"} // Título dinámico corregido
+                  data={socios}
+                  actions={actions}
+                  
+                />
+              
+            )}
+          </div>
+        </div>
       </div>
-      </div>
-      
-   
-   
-   
-   
+
+      {/* Modal ActualizarSocio */}
+      {showModal && socioId && (
+        <ActualizarSocio
+          socioId={socioId} // Pasa el ID del socio seleccionado
+          onClose={handleModalClose} // Cierra el modal
+          onUpdate={handleUpdate} // Refresca la lista de socios
+        />
+      )}
     </>
   );
 }

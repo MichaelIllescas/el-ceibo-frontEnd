@@ -80,7 +80,7 @@ const CambioEstadoJugador = () => {
   return (
     <>
       <Header />
-      <div className="d-flex justify-content-center align-content-center pt-4">
+      <div className="d-flex justify-content-center align-content-center py-5">
         <div className="mt-5 col-lg-10">
           {loading ? (
             <p className="text-center">Cargando jugadores...</p>

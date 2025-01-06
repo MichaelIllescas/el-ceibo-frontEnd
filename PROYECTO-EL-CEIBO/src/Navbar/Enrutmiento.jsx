@@ -17,6 +17,10 @@ import CambioEstadoJugador from "../Jugadores/CambiarEstadoJugador";
 import RegistrarPago from "../Pagos/RegistrarPago ";
 import VerListadoGeneralPagos from "../Pagos/VerPagosGeneral";
 import FiltrarHistorial from "../Pagos/FiltrarHistorial";
+import CambiarEstadoSocio from "../Socios/CambiarEstadoSocio"
+import FiltrarPagosPorCategoria from "../Pagos/FiltrarPagosPorCategoria";
+import FiltrarJugadoresPorCategoria from "../Jugadores/ListadoDeJugadores";
+import VerPagosPorPeriodo from "../Pagos/PagosPorPeriodo";
 
 const Enrrutado = () => {
   return (
@@ -29,17 +33,22 @@ const Enrrutado = () => {
       <Route path="/verCuotas" element={<VerCuotas />} />
       <Route path="/registrarCuota" element={<RegistrarCuota />} />
       <Route path="/actualizarCuotas" element={<ActualizarCuotas />} />
+
       <Route path="/VerSocios" element={<VerSocios />} />
       <Route path="/RegistrarSocio" element={<RegistrarSocio />} />
+      <Route path="/cambiarEstadoSocio" element={<CambiarEstadoSocio />} />
 
       <Route path="/registrarJugador" element={<RegistroJugadores />} />
       <Route path="/verJugadores" element={<VerJugadores />} />
       <Route path="/editarJugador" element={<EditarJugador />} />
       <Route path="/cambioEstado" element={<CambioEstadoJugador />} />
+      <Route path="/listadoDeJugadoresPorCategoria" element={<FiltrarJugadoresPorCategoria/>}></Route>
+      <Route path="/verPagosPorPeriodo" element={<VerPagosPorPeriodo/>}></Route>
 
       <Route path="/registrarPago" element={<RegistrarPago />} />
       <Route path="/ListadoPagosGeneral" element={<VerListadoGeneralPagos />} />
       <Route path="/filtrarHistorial" element={<FiltrarHistorial />} />
+      <Route path="/filtrarPagoPorCategoria" element={<VerPagosPorPeriodo/>}></Route>
     </Routes>
   );
 };

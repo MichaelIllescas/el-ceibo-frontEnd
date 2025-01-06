@@ -124,7 +124,7 @@ const TableGeneric = ({
         className="table-responsive"
         style={{ overflowX: "auto", maxWidth: "100%" }}
       >
-        <table className="table table-bordered table-striped table-sm text-center">
+        <table className="table table-bordered table-striped table-dark table-sm text-center">
           <thead>
             <tr>
               {columns.map(

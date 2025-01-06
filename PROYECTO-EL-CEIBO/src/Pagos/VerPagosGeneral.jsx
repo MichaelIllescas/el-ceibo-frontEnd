@@ -16,7 +16,7 @@ const VerListadoGeneralPagos = () => {
     const fetchPagos = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8080/api/pagos/ListadoGeneralPagos"
+          "http://localhost:8080/api/pagos/listadoGeneralPagos"
         );
 
         // Formatear fechas para mostrar en formato dd/MM/yyyy
@@ -49,18 +49,20 @@ const VerListadoGeneralPagos = () => {
   return (
     <>
       <Header />
-      <div className="d-flex justify-content-center align-content-center pt-4">
-        <div className="mt-5 col-lg-7">
+      <div className="d-flex justify-content-center align-content-center py-2">
+        <div className="mt-3  py-5">
           {loading ? (
             <p className="text-center">Cargando cuotas...</p>
           ) : error ? (
             <p className="text-center text-danger">{error}</p>
           ) : (
-            <TableGeneric
-              titulo={"Listado General de Pagos Registrados"}
-              data={pagos}
-              actions={actions}
-            />
+            <div className="py-0 container">
+              <TableGeneric
+                titulo={"Listado General de Pagos Registrados"}
+                data={pagos}
+                actions={actions}
+              />
+            </div>
           )}
         </div>
       </div>

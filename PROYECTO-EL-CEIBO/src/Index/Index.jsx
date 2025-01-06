@@ -76,7 +76,7 @@ function App() {
                 <div className="card-body">
                   <div className="row no-gutters align-items-center">
                     <div className="col mr-2">
-                      <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                      <div className="text-xs font-weight-bold text-dark text-uppercase mb-1">
                         Categorías activas
                       </div>
                       <div className="h5 mb-0 font-weight-bold text-gray-800">

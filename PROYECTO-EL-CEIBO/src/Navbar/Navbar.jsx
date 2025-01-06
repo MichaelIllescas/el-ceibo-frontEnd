@@ -44,25 +44,22 @@ const NavBar = () => {
                   <i className="fas fa-id-card"></i> Socios
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="sociosDropdown">
-                  <li>
-                    <Link to="/VerSocios" className="dropdown-item">
-                      <i className="fas fa-list"></i> Lista de Socios
-                    </Link>
-                  </li>
+               
                   <li>
                     <Link to="/RegistrarSocio" className="dropdown-item">
                       <i className="fas fa-user-plus"></i> Registrar Socio
                     </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-user-edit"></i> Actualizar Datos
-                    </a>
+                    <Link to="/VerSocios" className="dropdown-item">
+                      <i className="fas fa-list"></i> Lista de Socios
+                    </Link>
                   </li>
+                
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <Link to={"/cambiarEstadoSocio"} className="dropdown-item" >
                       <i className="fas fa-exchange-alt"></i> Cambiar Estado
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </li>
@@ -83,14 +80,20 @@ const NavBar = () => {
                   className="dropdown-menu"
                   aria-labelledby="jugadoresDropdown"
                 >
-                  <li>
-                    <Link to={"/verJugadores"} className="dropdown-item">
-                      <i className="fas fa-list"></i> Lista de Jugadores
-                    </Link>
-                  </li>
+                  
                   <li>
                     <Link to={"/registrarJugador"} className="dropdown-item">
                       <i className="fas fa-user-plus"></i> Registrar Jugador
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={"/verJugadores"} className="dropdown-item">
+                      <i className="fas fa-list"></i> Lista General de Jugadores
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to={"/listadoDeJugadoresPorCategoria"} className="dropdown-item">
+                      <i className="fas fa-list"></i> Lista de Jugadores por Categoría
                     </Link>
                   </li>
                   <li>
@@ -207,7 +210,7 @@ const NavBar = () => {
                   </li>
                   <li>
                     <Link to={"/ListadoPagosGeneral"} className="dropdown-item">
-                      <i className="fas fa-eye"></i> Ver Pagos Realizados
+                      <i className="fas fa-eye"></i> Ver Historial General de Pagos
                     </Link>
                   </li>
 
@@ -218,16 +221,16 @@ const NavBar = () => {
                     </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <Link to={"/filtrarPagoPorCategoria"} className="dropdown-item">
                       <i className="fas fa-th-list"></i> Reporte de Pagos Por
                       Categoría
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <Link to={"/verPagosPorPeriodo"} className="dropdown-item" >
                       <i className="fas fa-calendar-alt"></i> Reporte de Pagos
-                      por Período
-                    </a>
+                      por Fecha
+                    </Link>
                   </li>
                 </ul>
               </li>

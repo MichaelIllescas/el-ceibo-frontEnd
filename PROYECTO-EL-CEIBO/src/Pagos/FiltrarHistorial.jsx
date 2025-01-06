@@ -6,45 +6,61 @@ import Footer from "../Index/Footer";
 
 const FiltrarHistorial = () => {
   const [filtro, setFiltro] = useState(""); // Texto ingresado en el input
-  const [jugadores, setJugadores] = useState([]); // Lista de jugadores o socios
-  const [jugadoresFiltrados, setJugadoresFiltrados] = useState([]); // Jugadores filtrados
-  const [historial, setHistorial] = useState([]); // Historial del jugador seleccionado
-  const [jugadorSeleccionado, setJugadorSeleccionado] = useState(null); // Jugador seleccionado
+  const [personas, setPersonas] = useState([]); // Lista combinada de jugadores y socios
+  const [personasFiltradas, setPersonasFiltradas] = useState([]); // Personas filtradas
+  const [historial, setHistorial] = useState([]); // Historial de pagos de la persona seleccionada
+  const [personaSeleccionada, setPersonaSeleccionada] = useState(null); // Persona seleccionada
 
-  // Obtener jugadores o socios
+  // Obtener jugadores y socios
   useEffect(() => {
-    const fetchJugadores = async () => {
+    const fetchPersonas = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/jugadores");
-        setJugadores(response.data);
+        const jugadoresResponse = await axios.get(
+          "http://localhost:8080/api/jugadores"
+        );
+        const sociosResponse = await axios.get(
+          "http://localhost:8080/api/socios"
+        );
+        // Combinar jugadores y socios en una sola lista
+        const jugadores = jugadoresResponse.data.map((jugador) => ({
+          ...jugador,
+          tipo: "jugador",
+        }));
+        const socios = sociosResponse.data.map((socio) => ({
+          ...socio,
+          tipo: "socio",
+        }));
+        setPersonas([...jugadores, ...socios]);
       } catch (error) {
-        console.error("Error al obtener jugadores:", error);
+        console.error("Error al obtener jugadores y socios:", error);
       }
     };
-    fetchJugadores();
+    fetchPersonas();
   }, []);
 
-  // Filtrar jugadores en tiempo real
+  // Filtrar personas en tiempo real
   useEffect(() => {
     if (filtro.trim() === "") {
-      setJugadoresFiltrados([]);
+      setPersonasFiltradas([]);
       return;
     }
 
-    const filtrados = jugadores.filter((jugador) =>
-      `${jugador.nombre} ${jugador.apellido}`
+    const filtrados = personas.filter((persona) =>
+      `${persona.nombre} ${persona.apellido}`
         .toLowerCase()
         .includes(filtro.toLowerCase())
     );
-    setJugadoresFiltrados(filtrados);
-  }, [filtro, jugadores]);
+    setPersonasFiltradas(filtrados);
+  }, [filtro, personas]);
 
-  // Obtener historial del jugador seleccionado
-  const fetchHistorial = async (id) => {
+  // Obtener historial de la persona seleccionada
+  const fetchHistorial = async (id, tipo) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/pagos/jugador/${id}`
-      );
+      const url =
+        tipo === "jugador"
+          ? `http://localhost:8080/api/pagos/jugador/${id}`
+          : `http://localhost:8080/api/pagos/socio/${id}`;
+      const response = await axios.get(url);
       setHistorial(
         response.data.map((item) => ({
           ...item,
@@ -57,12 +73,14 @@ const FiltrarHistorial = () => {
     }
   };
 
-  // Manejar selección de jugador
-  const handleSeleccionarJugador = (jugador) => {
-    setJugadorSeleccionado(jugador);
-    fetchHistorial(jugador.id);
-    setFiltro(`${jugador.nombre} ${jugador.apellido} DNI N° ${jugador.dni}`);
-    setJugadoresFiltrados([]); // Oculta la lista filtrada
+  // Manejar selección de persona
+  const handleSeleccionarPersona = (persona) => {
+    setPersonaSeleccionada(persona);
+    fetchHistorial(persona.id, persona.tipo);
+    setFiltro(
+      `${persona.nombre} ${persona.apellido} DNI N° ${persona.dni}`
+    );
+    setPersonasFiltradas([]); // Oculta la lista filtrada
   };
 
   return (
@@ -70,7 +88,7 @@ const FiltrarHistorial = () => {
       <Header />
       <div className="pt-3">
         <div className="container my-5 py-5">
-          <div className="bg-black   text-light p-4 rounded">
+          <div className="bg-black text-light p-4 rounded">
             <h2>Filtrar Historial de Pagos de Jugadores o Socios</h2>
             <div className="mb-3">
               <label className="form-label">Buscar jugador o socio:</label>
@@ -81,30 +99,35 @@ const FiltrarHistorial = () => {
                 value={filtro}
                 onChange={(e) => setFiltro(e.target.value)}
               />
-              {jugadoresFiltrados.length > 0 && (
+              {personasFiltradas.length > 0 && (
                 <ul
                   className="list-group mt-2"
                   style={{ maxHeight: "200px", overflowY: "auto" }}
                 >
-                  {jugadoresFiltrados.map((jugador) => (
+                  {personasFiltradas.map((persona) => (
                     <li
-                      key={jugador.id}
+                      key={persona.id}
                       className="list-group-item"
-                      onClick={() => handleSeleccionarJugador(jugador)}
+                      onClick={() => handleSeleccionarPersona(persona)}
                       style={{ cursor: "pointer" }}
                     >
-                      {jugador.nombre} {jugador.apellido} DNI N° {jugador.dni}
+                      {persona.tipo === "jugador" ? "Jugador" : "Socio"}:{" "}
+                      {persona.nombre} {persona.apellido} DNI N° {persona.dni}
                     </li>
                   ))}
                 </ul>
               )}
             </div>
 
-            {jugadorSeleccionado && (
+            {personaSeleccionada && (
               <div className="mt-1">
                 <h4>
-                  Historial de {jugadorSeleccionado.nombre}{" "}
-                  {jugadorSeleccionado.apellido}
+                  Historial de {personaSeleccionada.nombre}{" "}
+                  {personaSeleccionada.apellido} (
+                  {personaSeleccionada.tipo === "jugador"
+                    ? "Jugador"
+                    : "Socio"}
+                  )
                 </h4>
                 {historial.length > 0 ? (
                   <TableGeneric
@@ -113,7 +136,7 @@ const FiltrarHistorial = () => {
                     actions={[]}
                   />
                 ) : (
-                  <p>No hay historial disponible para este jugador/socio.</p>
+                  <p>No hay historial disponible para esta persona.</p>
                 )}
               </div>
             )}
