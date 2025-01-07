@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig";
 
-const EditarJugador = ({ playerId, onClose, onUpdate }) => {
+const EditarUsuario = ({ playerId, onClose, onUpdate }) => {
   const [player, setPlayer] = useState({
     nombre: "",
     apellido: "",
@@ -172,4 +172,4 @@ const EditarJugador = ({ playerId, onClose, onUpdate }) => {
   );
 };
 
-export default EditarJugador;
+export default EditarUsuario;

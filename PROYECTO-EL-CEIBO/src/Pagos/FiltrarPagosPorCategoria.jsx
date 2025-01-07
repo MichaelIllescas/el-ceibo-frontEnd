@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 import TableGeneric from "/src/components/TableGeneric";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
@@ -16,7 +16,7 @@ const FiltrarPagosPorCategoria = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/categorias");
+        const response = await apiClient.get("/api/categorias");
         setCategorias(response.data);
       } catch (error) {
         console.error("Error al obtener categorías:", error);
@@ -30,14 +30,14 @@ const FiltrarPagosPorCategoria = () => {
     setLoading(true); // Mostrar indicador de carga
     try {
       // Construir URL manualmente
-      let url = "http://localhost:8080/api/pagos/estado-pagos?";
+      let url = "/api/pagos/estado-pagos?";
       if (categoriaSeleccionada) url += `categoriaId=${categoriaSeleccionada}&&`;
       if (mesSeleccionado) url += `mes=${mesSeleccionado}&&`;
       if (añoSeleccionado) url += `año=${añoSeleccionado}`;
   
       url = url.endsWith("&&") ? url.slice(0, -2) : url;
   
-      const response = await axios.get(url);
+      const response = await apiClient.get(url);
   
       setPagosFiltrados(response.data);
     } catch (error) {

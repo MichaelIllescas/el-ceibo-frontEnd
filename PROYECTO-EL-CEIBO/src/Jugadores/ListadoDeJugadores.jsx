@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
 import TableGeneric from "/src/components/TableGeneric";
@@ -14,7 +14,7 @@ const FiltrarJugadoresPorCategoria = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/categorias");
+        const response = await apiClient.get("/api/categorias");
         setCategorias(response.data);
       } catch (error) {
         console.error("Error al obtener categorías:", error);
@@ -32,8 +32,8 @@ const FiltrarJugadoresPorCategoria = () => {
 
     setLoading(true); // Mostrar indicador de carga
     try {
-      const response = await axios.get(
-        `http://localhost:8080/api/jugadores/categoria/${categoriaSeleccionada}`
+      const response = await apiClient.get(
+        `/api/jugadores/categoria/${categoriaSeleccionada}`
       );
       setJugadores(response.data);
     } catch (error) {

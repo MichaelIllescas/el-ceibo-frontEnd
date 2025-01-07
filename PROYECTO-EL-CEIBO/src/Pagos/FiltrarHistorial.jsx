@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 import TableGeneric from "/src/components/TableGeneric";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
@@ -15,11 +15,11 @@ const FiltrarHistorial = () => {
   useEffect(() => {
     const fetchPersonas = async () => {
       try {
-        const jugadoresResponse = await axios.get(
-          "http://localhost:8080/api/jugadores"
+        const jugadoresResponse = await apiClient.get(
+          "/api/jugadores"
         );
-        const sociosResponse = await axios.get(
-          "http://localhost:8080/api/socios"
+        const sociosResponse = await apiClient.get(
+          "/api/socios"
         );
         // Combinar jugadores y socios en una sola lista
         const jugadores = jugadoresResponse.data.map((jugador) => ({
@@ -58,8 +58,8 @@ const FiltrarHistorial = () => {
     try {
       const url =
         tipo === "jugador"
-          ? `http://localhost:8080/api/pagos/jugador/${id}`
-          : `http://localhost:8080/api/pagos/socio/${id}`;
+          ? `/api/pagos/jugador/${id}`
+          : `/api/pagos/socio/${id}`;
       const response = await axios.get(url);
       setHistorial(
         response.data.map((item) => ({

@@ -1,0 +1,5 @@
+@media (max-width: 576px) { /* Pantallas pequeñas (mobile) */
+    .role-container {
+      width: 75% !important;
+    }
+  }

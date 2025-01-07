@@ -3,7 +3,7 @@ import Header from "../Navbar/Header";
 import TableGeneric from "/src/Components/TableGeneric";
 import { FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 
 const VerListadoGeneralPagos = () => {
   const [pagos, setPagos] = useState([]);
@@ -15,8 +15,8 @@ const VerListadoGeneralPagos = () => {
   useEffect(() => {
     const fetchPagos = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/api/pagos/listadoGeneralPagos"
+        const response = await apiClient.get(
+          "/api/pagos/listadoGeneralPagos"
         );
 
         // Formatear fechas para mostrar en formato dd/MM/yyyy

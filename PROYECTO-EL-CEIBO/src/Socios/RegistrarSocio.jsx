@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Header from "../Navbar/Header";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 
 const RegistrarSocio = () => {
   const [formData, setFormData] = useState({
@@ -19,16 +19,26 @@ const RegistrarSocio = () => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value.trim(), // Eliminar espacios en blanco
+      [name]: value 
     });
   };
 
-  // Manejar el envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Validación básica en el frontend
-    const { nombre, apellido, dni, direccion, telefono, email } = formData;
+  
+    // Limpia los valores antes de enviar
+    const cleanedFormData = {
+      nombre: formData.nombre.trim(),
+      apellido: formData.apellido.trim(),
+      dni: formData.dni.trim(),
+      direccion: formData.direccion.trim(),
+      telefono: formData.telefono.trim(),
+      email: formData.email.trim(),
+      estado: "ACTIVO",
+    };
+  
+    // Validación básica
+    const { nombre, apellido, dni, direccion, telefono, email } = cleanedFormData;
     if (!nombre || !apellido || !dni || !direccion || !telefono || !email) {
       setMessage({
         text: "Por favor, completa todos los campos obligatorios.",
@@ -36,29 +46,19 @@ const RegistrarSocio = () => {
       });
       return;
     }
-
+  
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/socios", // URL del backend
-        {
-          ...formData,
-          estado: "ACTIVO", // Si este campo es obligatorio en el backend
+      const response = await apiClient.post("/api/socios", cleanedFormData, {
+        headers: {
+          "Content-Type": "application/json",
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      // Mostrar mensaje de éxito
+      });
+  
       setMessage({
         text: "Socio registrado con éxito.",
         type: "success",
       });
-
   
-      // Limpiar los campos del formulario
       setFormData({
         nombre: "",
         apellido: "",
@@ -68,9 +68,6 @@ const RegistrarSocio = () => {
         email: "",
       });
     } catch (error) {
-      
-
-      // Manejar errores específicos
       if (error.response) {
         const serverMessage = error.response.data.message || "Error desconocido en el servidor.";
         setMessage({
@@ -85,6 +82,7 @@ const RegistrarSocio = () => {
       }
     }
   };
+  
 
   return (
     <>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
 
@@ -28,7 +28,7 @@ const RegistrarPago = () => {
   useEffect(() => {
     const fetchCuotas = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/cuotas");
+        const response = await apiClient.get("/api/cuotas");
         setCuotas(response.data);
       } catch (error) {
         console.error("Error al obtener las cuotas:", error);
@@ -41,8 +41,8 @@ const RegistrarPago = () => {
   useEffect(() => {
     const fetchPersonas = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/api/pagos/listadoGeneral"
+        const response = await apiClient.get(
+          "/api/pagos/listadoGeneral"
         );
         setPersonas(response.data);
       } catch (error) {
@@ -117,8 +117,8 @@ const RegistrarPago = () => {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/api/pagos",
+      const response = await axios.apiClient(
+        "/api/pagos",
         pagoRequest
       );
       setMensaje("Pago registrado exitosamente.");

@@ -3,6 +3,25 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
+import apiClient from "../Config/axiosConfig";
+ 
+const handleLogout = async () => {
+  try {
+    // 1. Informar al servidor sobre el cierre de sesión
+    await apiClient.post("/auth/logout");
+
+    // 2. Eliminar el token del almacenamiento local (si es que lo usas)
+    localStorage.removeItem("authToken");
+    sessionStorage.removeItem("authToken");
+
+    // 3. Redirigir al usuario a la página de inicio de sesión
+    window.location.href = "/";
+  } catch (error) {
+    console.error("Error al cerrar sesión:", error);
+    alert("Ocurrió un error al intentar cerrar la sesión. Inténtalo nuevamente.");
+  }
+};
+
 const NavBar = () => {
   return (
     <>
@@ -221,7 +240,7 @@ const NavBar = () => {
                     </Link>
                   </li>
                   <li>
-                    <Link to={"/filtrarPagoPorCategoria"} className="dropdown-item">
+                    <Link to={"/historialDePagpPorCategoria"} className="dropdown-item">
                       <i className="fas fa-th-list"></i> Reporte de Pagos Por
                       Categoría
                     </Link>
@@ -282,32 +301,22 @@ const NavBar = () => {
                   aria-labelledby="usuariosDropdown"
                 >
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <Link to={"/registrarUsuario"} className="dropdown-item" >
                       <i className="fas fa-user-plus me-2"></i>Registrar Usuario
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <Link to={"/verUsuarios"} className="dropdown-item" >
                       <i className="fas fa-users me-2"></i>Ver Usuarios
-                    </a>
+                    </Link>
                   </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-user-edit me-2"></i>Actualizar
-                      Usuario
-                    </a>
-                  </li>
+                 
                   <li>
                     <a className="dropdown-item" href="#">
                       <i className="fas fa-user-times me-2"></i>Cambiar Estado
                     </a>
                   </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      <i className="fas fa-history me-2"></i>Historial de
-                      Actividades
-                    </a>
-                  </li>
+               
                 </ul>
               </li>
             </ul>
@@ -396,13 +405,13 @@ const NavBar = () => {
                   Cancelar
                 </button>
                 <button
-                  type="button"
-                  className="btn btn-danger"
-                  onClick={() => handleLogout()}
-                  data-bs-dismiss="modal"
-                >
-                  Cerrar Sesión
-                </button>
+  type="button"
+  className="btn btn-danger"
+  onClick={handleLogout}
+  data-bs-dismiss="modal"
+>
+  Cerrar Sesión
+</button>
               </div>
             </div>
           </div>

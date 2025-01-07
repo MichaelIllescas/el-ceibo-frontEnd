@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 
 const ActualizarSocio = ({ socioId, onClose, onUpdate }) => {
   const [socio, setSocio] = useState({
@@ -15,7 +15,7 @@ const ActualizarSocio = ({ socioId, onClose, onUpdate }) => {
   useEffect(() => {
     const fetchSocio = async () => {
       try {
-        const response = await axios.get(`http://localhost:8080/api/socios/${socioId}`);
+        const response = await apiClient.get(`/api/socios/${socioId}`);
         setSocio(response.data);
       } catch (error) {
         console.error("Error al cargar los datos del socio:", error);
@@ -35,7 +35,7 @@ const ActualizarSocio = ({ socioId, onClose, onUpdate }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8080/api/socios/${socioId}`, socio);
+      await apiClient.put(`/api/socios/${socioId}`, socio);
       onUpdate(); // Actualiza la lista de socios
       onClose(); // Cierra el modal
     } catch (error) {

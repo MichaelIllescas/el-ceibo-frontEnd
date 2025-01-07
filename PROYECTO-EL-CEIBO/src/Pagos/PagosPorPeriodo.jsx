@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig"; 
 import TableGeneric from "/src/components/TableGeneric";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
@@ -16,7 +16,7 @@ const VerPagosPorPeriodo = () => {
     setLoading(true);
     try {
       // Construimos la URL con los parámetros optativos
-      let url = "http://localhost:8080/api/pagos/por-periodo?";
+      let url = "/api/pagos/por-periodo?";
       if (añoSeleccionado) url += `año=${añoSeleccionado}&`;
       if (mesSeleccionado) url += `mes=${mesSeleccionado}&`;
       if (diaSeleccionado) url += `dia=${diaSeleccionado}`;
@@ -24,7 +24,7 @@ const VerPagosPorPeriodo = () => {
       // Eliminar el último "&" si quedara colgando
       url = url.endsWith("&") ? url.slice(0, -1) : url;
 
-      const response = await axios.get(url);
+      const response = await apiClient.get(url);
       setPagos(response.data);
     } catch (error) {
       console.error("Error al obtener pagos:", error);

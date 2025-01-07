@@ -23,6 +23,8 @@ import FiltrarJugadoresPorCategoria from "../Jugadores/ListadoDeJugadores";
 import VerPagosPorPeriodo from "../Pagos/PagosPorPeriodo";
 import GraficoRecaudaciones from "../Recaudaciones/RecaudacionesAnuales";
 import VerRecaudacionesTrimestrales from "../Recaudaciones/VerRecaudacionesTrimestrales ";
+import RegistroUsuario from "../Usuarios/RegistrarUsuario";
+import VerUsuarios from "../Usuarios/VerUsuarios";
 
 const Enrrutado = () => {
   return (
@@ -51,10 +53,13 @@ const Enrrutado = () => {
       <Route path="/ListadoPagosGeneral" element={<VerListadoGeneralPagos />} />
       <Route path="/filtrarHistorial" element={<FiltrarHistorial />} />
       <Route path="/filtrarPagoPorCategoria" element={<VerPagosPorPeriodo/>}></Route>
+      <Route path="/historialDePagpPorCategoria" element  ={<FiltrarPagosPorCategoria/>}></Route>
 
       <Route path="/recaudacionesAnuales" element={<GraficoRecaudaciones/>}></Route>
       <Route path="/recaudacionTrimestral" element={<VerRecaudacionesTrimestrales/>}></Route>
 
+      <Route path="/registrarUsuario" element={<RegistroUsuario/>}></Route>
+      <Route path="/verUsuarios" element={<VerUsuarios/>}></Route>
 
     </Routes>
   );

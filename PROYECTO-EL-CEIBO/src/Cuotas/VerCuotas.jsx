@@ -3,7 +3,7 @@ import Header from "../Navbar/Header";
 import TableGeneric from "/src/Components/TableGeneric";
 import { FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig"; 
 
 const VerCuotas = () => {
   const [cuotas, setCuotas] = useState([]);
@@ -15,7 +15,7 @@ const VerCuotas = () => {
   useEffect(() => {
     const fetchCuotas = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/cuotas");
+        const response = await apiClient.get("/api/cuotas");
 
         // Formatear fechas para mostrar en formato dd/MM/yyyy
         const formattedCuotas = response.data.map((cuota) => ({

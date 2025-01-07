@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
 import TableGeneric from "/src/Components/TableGeneric";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, Button } from "react-bootstrap";
 
@@ -17,8 +17,8 @@ const CambioEstadoSocio = () => {
   // Función para obtener los socios desde el backend
   const fetchSocios = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:8080/api/socios"
+      const response = await apiClient.get(
+        "/api/socios"
       );
       setSocios(response.data);
     } catch (err) {
@@ -45,10 +45,10 @@ const CambioEstadoSocio = () => {
     try {
       const endpoint =
         action === "anular"
-          ? `http://localhost:8080/api/socios/${selectedSocio.id}/anular`
-          : `http://localhost:8080/api/socios/${selectedSocio.id}/habilitar`;
+          ? `/api/socios/${selectedSocio.id}/anular`
+          : `/api/socios/${selectedSocio.id}/habilitar`;
 
-      await axios.put(endpoint); // Llamada al backend
+      await apiClient.put(endpoint); // Llamada al backend
       setShowModal(false); // Cierra el modal
       fetchSocios(); // Refresca la lista de socios
     } catch (err) {

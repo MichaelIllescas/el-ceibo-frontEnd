@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./RegistrarCategoria.css";
 import NavBar from "/src/NavBar/NavBar";
 import Footer from "/src/Index/Footer";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig"; 
 
 const RegistrarCategoria = () => {
   const [categoria, setCategoria] = useState("");
@@ -13,22 +13,21 @@ const RegistrarCategoria = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMensaje(null); // Reinicia el mensaje al intentar registrar
-
+    setMensaje(null); // Reinicia el mensaje
+  
     try {
       const nuevaCategoria = {
-        nombre: categoria,
-        descripcion: descripcion,
+        nombre: categoria.trim(),
+        descripcion: descripcion.trim(),
       };
-
-      const response = await axios.post(
-        "http://localhost:8080/api/categorias",
-        nuevaCategoria
-      );
-
+  
+      console.log("Datos enviados:", nuevaCategoria); // Log para verificar
+  
+      const response = await apiClient.post("/api/categorias", nuevaCategoria);
+  
       setMensaje({ texto: "Categoría registrada con éxito.", tipo: "success" });
       console.log("Respuesta del servidor:", response.data);
-
+  
       // Limpiar formulario
       setCategoria("");
       setDescripcion("");
@@ -44,7 +43,7 @@ const RegistrarCategoria = () => {
       setLoading(false);
     }
   };
-
+  
   return (
     <>
       <NavBar />

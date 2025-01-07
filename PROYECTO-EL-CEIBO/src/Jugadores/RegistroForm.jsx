@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 
 const RegistroJugadorForm = () => {
   const [jugador, setJugador] = useState({
@@ -18,8 +18,8 @@ const RegistroJugadorForm = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/api/categorias"
+        const response = await apiClient.get(
+          "/api/categorias"
         );
         setCategorias(response.data); // Guardamos las categorías en el estado
       } catch (error) {
@@ -38,7 +38,7 @@ const RegistroJugadorForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8080/api/jugadores", {
+      const response = await apiClient.post("/api/jugadores", {
         nombre: jugador.nombre,
         apellido: jugador.apellido,
         dni: jugador.dni,

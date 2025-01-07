@@ -1,7 +1,7 @@
 import Footer from "../Index/Footer";
 import Header from "../Navbar/Header";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig"
 import { Line } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -31,8 +31,8 @@ const VerRecaudacionesAnuales = () => {
     const fetchRecaudaciones = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(
-          `http://localhost:8080/api/recaudaciones/mensuales?year=${anioSeleccionado}`
+        const response = await apiClient.get(
+          `/api/recaudaciones/mensuales?year=${anioSeleccionado}`
         );
 
         setDatosAnuales(response.data);

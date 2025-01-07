@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Header from "../Navbar/Header";
-import Footer from "../Index/Footer";
+import Footer from "../index/Footer";
 import TableGeneric from "/src/Components/TableGeneric";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 import { FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
 
 const VerCategoria = () => {
@@ -15,8 +15,8 @@ const VerCategoria = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/api/categorias"
+        const response = await apiClient.get(
+          "/api/categorias"
         );
         setCategorias(response.data); // Asignar las categorías al estado
       } catch (err) {

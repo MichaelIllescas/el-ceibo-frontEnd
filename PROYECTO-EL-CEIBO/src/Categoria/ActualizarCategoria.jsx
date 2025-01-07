@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "../Navbar/Header";
 import Footer from "/src/Index/Footer";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig"; 
 
 const ActualizarCategoria = () => {
   const [categorias, setCategorias] = useState([]); // Estado para almacenar las categorías
@@ -15,9 +15,7 @@ const ActualizarCategoria = () => {
   useEffect(() => {
     const fetchCategorias = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:8080/api/categorias"
-        );
+        const response = await apiClient.get("/api/categorias"); // Llamada con apiClient
         setCategorias(response.data); // Asignar categorías al estado
       } catch (err) {
         console.error("Error al cargar las categorías:", err);
@@ -62,10 +60,10 @@ const ActualizarCategoria = () => {
         descripcion: formData.descripcion,
       };
 
-      await axios.put(
-        `http://localhost:8080/api/categorias/${selectedCategoria.id}`,
+      await apiClient.put(
+        `/api/categorias/${selectedCategoria.id}`,
         updatedCategoria
-      );
+      ); // Llamada con apiClient
 
       setMessage({ text: "Categoría actualizada con éxito.", type: "success" });
 

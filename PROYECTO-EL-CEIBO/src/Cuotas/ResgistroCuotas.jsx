@@ -1,7 +1,7 @@
 import Footer from "../Index/Footer";
 import Header from "../Navbar/Header";
 import React, { useState } from "react";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 
 const RegisterFeeForm = () => {
   const [formData, setFormData] = useState({
@@ -21,7 +21,7 @@ const RegisterFeeForm = () => {
     setMessage(null); // Limpiar mensaje previo
 
     try {
-      const response = await axios.post("http://localhost:8080/api/cuotas", {
+      const response = await apiClient.post("/api/cuotas", {
         tipo: formData.type, // Ajuste para coincidir con los nombres de los campos en el backend
         monto: parseFloat(formData.amount), // Asegurar que el monto sea numérico
         fechaRegistro: new Date().toISOString(), // Opcional: Puedes agregar esto desde el frontend si es necesario

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../Navbar/Header";
 import TableGeneric from "/src/Components/TableGeneric";
 import { FaEdit } from "react-icons/fa";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 import ActualizarSocio from "./ActualizarSocio";
 
 function VerSocios() {
@@ -15,7 +15,7 @@ function VerSocios() {
   useEffect(() => {
     const fetchSocios = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/socios");
+        const response = await apiClient.get("/api/socios");
         setSocios(response.data);
       } catch (err) {
         setError("Error al obtener los datos.");
@@ -41,7 +41,7 @@ function VerSocios() {
   const handleUpdate = async () => {
     // Refresca la lista de socios después de la actualización
     try {
-      const response = await axios.get("http://localhost:8080/api/socios");
+      const response = await apiClient.get("/api/socios");
       setSocios(response.data);
     } catch (err) {
       console.error("Error al actualizar la lista de socios:", err);

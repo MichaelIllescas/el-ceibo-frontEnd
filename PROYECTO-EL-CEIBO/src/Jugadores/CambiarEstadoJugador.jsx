@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
 import TableGeneric from "/src/Components/TableGeneric";
-import axios from "axios";
+import apiClient from "../Config/axiosConfig";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Modal, Button } from "react-bootstrap";
 
@@ -17,8 +17,8 @@ const CambioEstadoJugador = () => {
   // Función para obtener los jugadores desde el backend
   const fetchJugadores = async () => {
     try {
-      const response = await axios.get(
-        "http://192.168.0.103:8080/api/jugadores/estados"
+      const response = await apiClient.get(
+        "/api/jugadores/estados"
       );
       setJugadores(response.data);
     } catch (err) {
@@ -45,10 +45,10 @@ const CambioEstadoJugador = () => {
     try {
       const endpoint =
         action == "deshabilitar"
-          ? `http://192.168.0.103:8080/api/jugadores/deshabilitar/${selectedPlayer.id}`
-          : `http://192.168.0.103:8080/api/jugadores/habilitar/${selectedPlayer.id}`;
+          ? `/api/jugadores/deshabilitar/${selectedPlayer.id}`
+          : `/api/jugadores/habilitar/${selectedPlayer.id}`;
 
-      await axios.put(endpoint); // Llamada al backend
+      await apiClient.put(endpoint); // Llamada al backend
       setShowModal(false); // Cierra el modal
       fetchJugadores(); // Refresca la lista de jugadores
     } catch (err) {

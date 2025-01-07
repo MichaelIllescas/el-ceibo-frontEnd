@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
-import axios from "axios";
-
+import apiClient from "../Config/axiosConfig"; 
 const ActualizarCuotas = () => {
   const [feeTypes, setFeeTypes] = useState([]); // Tipos de cuotas desde el backend
   const [selectedFeeType, setSelectedFeeType] = useState(null); // Tipo de cuota seleccionado
@@ -15,7 +14,7 @@ const ActualizarCuotas = () => {
   useEffect(() => {
     const fetchFeeTypes = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/cuotas");
+        const response = await apiClient.get("/api/cuotas");
         setFeeTypes(response.data);
       } catch (err) {
         console.error("Error al cargar los tipos de cuotas:", err);
@@ -62,8 +61,8 @@ const ActualizarCuotas = () => {
         monto: parseFloat(formData.amount),
       };
 
-      await axios.put(
-        `http://localhost:8080/api/cuotas/${selectedFeeType.id}`,
+      await apiClient.put(
+        `/api/cuotas/${selectedFeeType.id}`,
         updatedFee
       );
 
