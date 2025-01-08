@@ -41,9 +41,7 @@ const RegistrarPago = () => {
   useEffect(() => {
     const fetchPersonas = async () => {
       try {
-        const response = await apiClient.get(
-          "/api/pagos/listadoGeneral"
-        );
+        const response = await apiClient.get("/api/pagos/listadoGeneral");
         setPersonas(response.data);
       } catch (error) {
         console.error("Error al obtener las personas:", error);
@@ -117,10 +115,7 @@ const RegistrarPago = () => {
     };
 
     try {
-      const response = await axios.apiClient(
-        "/api/pagos",
-        pagoRequest
-      );
+      const response = await apiClient.post("/api/pagos", pagoRequest);
       setMensaje("Pago registrado exitosamente.");
 
       // Restablecer el formulario
