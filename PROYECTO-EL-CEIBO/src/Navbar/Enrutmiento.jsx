@@ -25,6 +25,7 @@ import GraficoRecaudaciones from "../Recaudaciones/RecaudacionesAnuales";
 import VerRecaudacionesTrimestrales from "../Recaudaciones/VerRecaudacionesTrimestrales ";
 import RegistroUsuario from "../Usuarios/RegistrarUsuario";
 import VerUsuarios from "../Usuarios/VerUsuarios";
+import CambioEstadoUsuario from "../Usuarios/CambiarEstadoUsuario";
 
 const Enrrutado = () => {
   return (
@@ -60,6 +61,7 @@ const Enrrutado = () => {
 
       <Route path="/registrarUsuario" element={<RegistroUsuario/>}></Route>
       <Route path="/verUsuarios" element={<VerUsuarios/>}></Route>
+      <Route path="/cambiar-estado-usuario" element={<CambioEstadoUsuario/>}></Route>
 
     </Routes>
   );

@@ -1,82 +1,86 @@
 import React, { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig";
 
-const EditarUsuario = ({ playerId, onClose, onUpdate }) => {
-  const [player, setPlayer] = useState({
+const EditarUsuario = ({ userId, onClose, onUpdate }) => {
+  const [user, setUser] = useState({
+    id: null,
     nombre: "",
     apellido: "",
     dni: "",
     telefono: "",
+    direccion: "",
     email: "",
-    categoria: "", // Cambiado para manejar el nombre de la categoría
+    estado: "activo",
+    rol: "", // Rol inicial como string vacío
   });
-  const [categorias, setCategorias] = useState([]); // Almacenar las categorías disponibles
+  const [roles, setRoles] = useState([]); // Para almacenar roles como strings
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Cargar datos del jugador y categorías
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [playerResponse, categoriasResponse] = await Promise.all([
-          apiClient.get(`/api/jugadores/${playerId}`),
-          apiClient.get("/api/categorias"),
+        const [userResponse, rolesResponse] = await Promise.all([
+          apiClient.get(`/api/users/${userId}`),
+          apiClient.get("/auth/roles"), // Los roles vienen como ["USER", "ADMIN"]
         ]);
 
-        setPlayer({
-          ...playerResponse.data,
-          categoria: playerResponse.data.categoria.nombre, // Almacenar el nombre de la categoría
+        setUser({
+          ...userResponse.data,
+          estado: userResponse.data.estado || "Activo",
+          rol: userResponse.data.rol || "", // Asegura que 'rol' sea un string
         });
-        setCategorias(categoriasResponse.data || []);
-      } catch (error) {
-        console.error("Error al cargar datos:", error);
+        setRoles(rolesResponse.data || []); // Los roles se guardan como strings
+      } catch (err) {
+        console.error("Error al cargar datos:", err);
+        setError("Hubo un error al cargar los datos. Intente nuevamente.");
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [playerId]);
+  }, [userId]);
 
-  // Manejar cambios en los campos del formulario
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setPlayer({ ...player, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
-  // Enviar los datos al backend
   const handleSubmit = (e) => {
     e.preventDefault();
     apiClient
-      .put(`/api/jugadores/${playerId}`, player)
+      .put(`/api/users/${userId}`, user)
       .then(() => {
-        onUpdate(); // Refrescar la lista de jugadores
-        onClose(); // Cerrar el modal
+        onUpdate();
+        onClose();
       })
-      .catch((error) =>
-        console.error("Error al actualizar el jugador:", error)
-      );
+      .catch((err) => {
+        console.error("Error al actualizar el usuario:", err);
+        setError("Hubo un error al actualizar el usuario. Intente nuevamente.");
+      });
   };
 
   if (loading) {
     return <p>Cargando datos...</p>;
   }
 
+  if (error) {
+    return <p className="text-danger">{error}</p>;
+  }
+
   return (
     <div
-      className="modal fade show d-block" // Clase para mostrar el modal
+      className="modal fade show d-block"
       tabIndex="-1"
       role="dialog"
-      style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }} // Fondo oscuro detrás del modal
+      style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
     >
       <div className="modal-dialog" role="document">
         <div className="modal-content">
           <div className="modal-header">
-            <h5 className="modal-title">Editar Jugador</h5>
-            <button
-              type="button"
-              className="btn-close"
-              onClick={onClose}
-            ></button>
+            <h5 className="modal-title">Editar Usuario</h5>
+            <button type="button" className="btn-close" onClick={onClose}></button>
           </div>
           <div className="modal-body">
             <form onSubmit={handleSubmit}>
@@ -86,7 +90,7 @@ const EditarUsuario = ({ playerId, onClose, onUpdate }) => {
                   type="text"
                   name="nombre"
                   className="form-control"
-                  value={player.nombre}
+                  value={user.nombre}
                   onChange={handleChange}
                   required
                 />
@@ -97,7 +101,7 @@ const EditarUsuario = ({ playerId, onClose, onUpdate }) => {
                   type="text"
                   name="apellido"
                   className="form-control"
-                  value={player.apellido}
+                  value={user.apellido}
                   onChange={handleChange}
                   required
                 />
@@ -108,7 +112,7 @@ const EditarUsuario = ({ playerId, onClose, onUpdate }) => {
                   type="text"
                   name="dni"
                   className="form-control"
-                  value={player.dni}
+                  value={user.dni}
                   onChange={handleChange}
                   required
                 />
@@ -119,7 +123,18 @@ const EditarUsuario = ({ playerId, onClose, onUpdate }) => {
                   type="text"
                   name="telefono"
                   className="form-control"
-                  value={player.telefono}
+                  value={user.telefono}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label>Dirección:</label>
+                <input
+                  type="text"
+                  name="direccion"
+                  className="form-control"
+                  value={user.direccion}
                   onChange={handleChange}
                   required
                 />
@@ -130,24 +145,37 @@ const EditarUsuario = ({ playerId, onClose, onUpdate }) => {
                   type="email"
                   name="email"
                   className="form-control"
-                  value={player.email}
+                  value={user.email}
                   onChange={handleChange}
                   required
                 />
               </div>
               <div className="mb-3">
-                <label>Categoría:</label>
+                <label>Estado:</label>
                 <select
-                  name="categoria"
+                  name="estado"
                   className="form-select"
-                  value={player.categoria}
+                  value={user.estado}
                   onChange={handleChange}
                   required
                 >
-                  <option value="">Seleccione una categoría</option>
-                  {categorias.map((categoria) => (
-                    <option key={categoria.id} value={categoria.nombre}>
-                      {categoria.nombre}
+                  <option value="ACTIVO">Activo</option>
+                  <option value="INACTIVO">Inactivo</option>
+                </select>
+              </div>
+              <div className="mb-3">
+                <label>Rol:</label>
+                <select
+                  name="rol"
+                  className="form-select"
+                  value={user.rol}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">Seleccione un Rol</option>
+                  {roles.map((role) => (
+                    <option key={role} value={role}>
+                      {role}
                     </option>
                   ))}
                 </select>

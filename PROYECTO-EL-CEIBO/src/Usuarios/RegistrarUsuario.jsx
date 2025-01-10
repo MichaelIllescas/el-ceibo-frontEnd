@@ -13,7 +13,7 @@ const RegistroUsuario = () => {
     direccion: "",
     email: "",
     password: "",
-    role: "USER", // Valor predeterminado
+    role: "USER", // Valor predeterminado como string
   });
 
   const [roles, setRoles] = useState([]);
@@ -25,7 +25,11 @@ const RegistroUsuario = () => {
     const fetchRoles = async () => {
       try {
         const response = await apiClient.get("auth/roles"); // Ajusta esta URL según tu API
-        setRoles(response.data);
+        if (Array.isArray(response.data)) {
+          setRoles(response.data);
+        } else {
+          console.error("El formato de roles no es un array.");
+        }
       } catch (err) {
         console.error("Error al cargar los roles:", err);
       }
@@ -47,6 +51,8 @@ const RegistroUsuario = () => {
     setError(null);
     setSuccess(null);
 
+    console.log("Datos enviados al backend:", formData); // Verifica los datos enviados
+
     try {
       const response = await apiClient.post("/auth/registrarUsuario", formData);
       setSuccess("Usuario registrado exitosamente.");
@@ -58,7 +64,7 @@ const RegistroUsuario = () => {
         direccion: "",
         email: "",
         password: "",
-        role: "USER",
+        role: "USER", // Restablece al valor predeterminado
       });
     } catch (err) {
       setError("Hubo un error al registrar el usuario. Intenta nuevamente.");
@@ -77,12 +83,9 @@ const RegistroUsuario = () => {
               className="bg-dark text-light p-4 rounded"
             >
               <h1 className="text-center mb-4">Registrar Usuario</h1>
-              {error && <p className="text-danger text-center">{error}</p>}
-              {success && <p className="text-success text-center">{success}</p>}
 
-              {/* Contenedor principal con Flexbox */}
               <div className="d-flex flex-column gap-4">
-                {/* Fila 1: Nombre y Apellido */}
+                {/* Nombre y Apellido */}
                 <div className="d-flex flex-wrap gap-3">
                   <div className="flex-fill">
                     <label htmlFor="firstName" className="form-label">
@@ -115,7 +118,7 @@ const RegistroUsuario = () => {
                   </div>
                 </div>
 
-                {/* Fila 2: DNI y Teléfono */}
+                {/* DNI y Teléfono */}
                 <div className="d-flex flex-wrap gap-3">
                   <div className="flex-fill">
                     <label htmlFor="dni" className="form-label">
@@ -148,7 +151,7 @@ const RegistroUsuario = () => {
                   </div>
                 </div>
 
-                {/* Fila 2: direccion y Correo electronico */}
+                {/* Dirección y Correo Electrónico */}
                 <div className="d-flex flex-wrap gap-3">
                   <div className="flex-fill">
                     <label htmlFor="direccion" className="form-label">
@@ -165,7 +168,6 @@ const RegistroUsuario = () => {
                     />
                   </div>
 
-                  {/* Correo Electrónico */}
                   <div className="flex-fill">
                     <label htmlFor="email" className="form-label">
                       Correo Electrónico
@@ -182,9 +184,8 @@ const RegistroUsuario = () => {
                   </div>
                 </div>
 
-                {/* Fila 1: Contraseña y Rol */}
+                {/* Contraseña y Rol */}
                 <div className="d-flex flex-wrap gap-3 align-items-center">
-                  {/* Campo Contraseña */}
                   <div className="flex-fill">
                     <label htmlFor="password" className="form-label">
                       Contraseña
@@ -200,31 +201,34 @@ const RegistroUsuario = () => {
                     />
                   </div>
 
-                  {/* Campo Rol */}
                   <div className="flex-fill role-container">
                     <label htmlFor="role" className="form-label">
                       Rol
                     </label>
                     <select
-  id="role"
-  name="role"
-  className="form-select m-auto"
-  value={formData.role}
-  onChange={handleChange}
-  required
-  style={{ width: "290px" }}
->
-  {roles.map((role, index) => (
-    <option key={index} value={role}>
-      {role}
-    </option>
-  ))}
-</select>
-
+                      id="role"
+                      name="role"
+                      className="form-select m-auto"
+                      value={formData.role}
+                      onChange={handleChange}
+                      required
+                      style={{ width: "290px" }}
+                    >
+                      <option value="" disabled>
+                        Seleccionar Rol
+                      </option>
+                      {roles.map((role, index) => (
+                        <option key={index} value={role}>
+                          {role}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>
-              {/* Botón de envío */}
+
+              {error && <p className="text-danger text-center">{error}</p>}
+              {success && <p className="text-success text-center">{success}</p>}
               <div className="text-center mt-4">
                 <button type="submit" className="btn btn-primary">
                   Registrar
@@ -240,3 +244,6 @@ const RegistroUsuario = () => {
 };
 
 export default RegistroUsuario;
+
+
+

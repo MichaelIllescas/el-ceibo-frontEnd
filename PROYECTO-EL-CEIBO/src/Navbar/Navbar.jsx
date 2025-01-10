@@ -312,9 +312,9 @@ const NavBar = () => {
                   </li>
                  
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <Link to={"/cambiar-estado-usuario"} className="dropdown-item" >
                       <i className="fas fa-user-times me-2"></i>Cambiar Estado
-                    </a>
+                    </Link>
                   </li>
                
                 </ul>

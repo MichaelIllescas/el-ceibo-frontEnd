@@ -2,24 +2,20 @@ import React, { useState, useEffect } from "react";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
 import TableGeneric from "/src/Components/TableGeneric";
-import EditarJugador from "/src/Jugadores/EditarJugador";
 import apiClient from "../Config/axiosConfig";
 import "bootstrap/dist/css/bootstrap.min.css";
 import EditarUsuario from "./EditarUsuario";
 
 const VerUsuarios = () => {
-  const [usuarios, setUsuarios] = useState([]); // Estado para almacenar los usuarios
-  const [loading, setLoading] = useState(true); // Estado para manejar el spinner o carga
-  const [error, setError] = useState(null); // Estado para manejar errores
-  const [selectedPlayerId, setSelectedPlayerId] = useState(null); // Estado para el jugador seleccionado
+  const [usuarios, setUsuarios] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
-  // Función para obtener los jugadores desde el backend
   const fetchUsuarios = async () => {
     try {
       const response = await apiClient.get("/api/users/getAllUsers");
-
-      
-      setUsuarios(response.data); // Asignar los usuarios al estado
+      setUsuarios(response.data);
     } catch (err) {
       console.error("Error al obtener los usuarios:", err);
       setError("No se pudieron cargar los usuarios. Intente nuevamente.");
@@ -29,18 +25,18 @@ const VerUsuarios = () => {
   };
 
   useEffect(() => {
-    fetchUsuarios(); // Llama a la función al montar el componente
+    fetchUsuarios();
   }, []);
 
-  const handleEdit = (playerId) => {
-    setSelectedPlayerId(playerId); // Establece el socio seleccionado para edición
+  const handleEdit = (userId) => {
+    setSelectedUserId(userId);
   };
 
   const actions = [
     {
       label: "Editar",
       className: "btn-warning",
-      onClick: (row) => handleEdit(row.id), // Lógica para el botón de edición
+      onClick: (row) => handleEdit(row.id),
     },
   ];
 
@@ -54,21 +50,16 @@ const VerUsuarios = () => {
           ) : error ? (
             <p className="text-center text-danger">{error}</p>
           ) : (
-            <TableGeneric
-              titulo={"Ver Usuarios"}
-              data={usuarios}
-              actions={actions}
-            />
+            <TableGeneric titulo={"Ver Usuarios"} data={usuarios} actions={actions} />
           )}
         </div>
       </div>
 
-      {/* Modal de edición */}
-      {selectedPlayerId && (
+      {selectedUserId && (
         <EditarUsuario
-          playerId={selectedPlayerId} // ID del jugador a editar
-          onClose={() => setSelectedPlayerId(null)} // Cierra el modal
-          onUpdate={fetchJugadores} // Refresca la lista después de actualizar
+          userId={selectedUserId}
+          onClose={() => setSelectedUserId(null)}
+          onUpdate={fetchUsuarios}
         />
       )}
 
