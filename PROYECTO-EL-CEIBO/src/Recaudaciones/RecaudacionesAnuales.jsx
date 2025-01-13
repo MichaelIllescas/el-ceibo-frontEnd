@@ -1,4 +1,4 @@
-import Footer from "../Index/Footer";
+import Footer from "../index/Footer";
 import Header from "../Navbar/Header";
 import React, { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig"

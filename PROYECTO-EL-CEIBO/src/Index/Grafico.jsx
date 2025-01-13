@@ -1,27 +1,41 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+} from "chart.js";
 
-// Registrar los componentes de Chart.js
+// Registrar componentes de Chart.js
 ChartJS.register(LineElement, PointElement, CategoryScale, LinearScale, Tooltip, Legend);
 
-const GraficoIndex = () => {
-  // Datos ficticios
-  const data = {
-    labels: ["Enero", "Febrero", "MArzo", "Abril", "Mayo", "Junio"],
+const GraficoIndex = ({ data }) => {
+  const meses = [
+    "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+    "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+  ];
+
+  // Configuración de datos del gráfico
+  const chartData = {
+    labels: meses,
     datasets: [
       {
-        label: "Ganancias",
-        data: [5000, 8000, 6000, 12000, 15000, 20000], // Datos ficticios
+        label: "Recaudaciones Mensuales",
+        data: data || [], // Utiliza los datos pasados como prop
         borderColor: "rgba(75, 192, 192, 1)",
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderWidth: 2,
-        tension: 0.4, // Hace la línea más curva
+        tension: 0.4,
       },
     ],
   };
 
-  const options = {
+  // Opciones del gráfico
+  const chartOptions = {
     responsive: true,
     plugins: {
       legend: {
@@ -34,17 +48,19 @@ const GraficoIndex = () => {
     },
     scales: {
       x: {
-        grid: {
-          display: false,
+        ticks: {
+          color: "black",
         },
       },
       y: {
-        beginAtZero: true,
+        ticks: {
+          color: "black",
+        },
       },
     },
   };
 
-  return <Line data={data} options={options} />;
+  return <Line data={chartData} options={chartOptions} />;
 };
 
 export default GraficoIndex;

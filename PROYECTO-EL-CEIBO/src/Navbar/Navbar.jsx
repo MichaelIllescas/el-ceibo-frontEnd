@@ -2,7 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-
+import {jwtDecode} from "jwt-decode"; 
+import { getCookie } from "../Auth/cookieUtils";
 import apiClient from "../Config/axiosConfig";
  
 const handleLogout = async () => {
@@ -23,6 +24,15 @@ const handleLogout = async () => {
 };
 
 const NavBar = () => {
+    // Obtener el valor de la cookie "authToken"
+    const token = getCookie("authToken");
+
+    // Decodificar el token para obtener el rol del usuario
+    let role = null;
+    if (token) {
+      const decoded = jwtDecode(token); // Uso correcto de jwtDecode
+      role = decoded.role; // Ajusta según tu JWT
+    }
   return (
     <>
       {" "}
@@ -123,7 +133,8 @@ const NavBar = () => {
                 </ul>
               </li>
 
-              {/* Gestión de Cuotas */}
+               {/* Gestión de Cuotas */}
+               {role === "ADMIN" && (
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
@@ -161,10 +172,10 @@ const NavBar = () => {
                     </Link>
                   </li>
                 </ul>
-              </li>
+              </li>)}
 
               {/* Gestión de Categorías */}
-              <li className="nav-item dropdown">
+              {role === "ADMIN" && (<li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
                   href="#"
@@ -207,7 +218,7 @@ const NavBar = () => {
                     </Link>
                   </li>
                 </ul>
-              </li>
+              </li> )}
 
               {/* Gestión de Pagos */}
               <li className="nav-item dropdown">
@@ -285,7 +296,7 @@ const NavBar = () => {
               </li>
 
               {/* Gestión de Usuarios */}
-              <li className="nav-item dropdown">
+              {role === "ADMIN" && (<li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
                   href="#"
@@ -318,7 +329,7 @@ const NavBar = () => {
                   </li>
                
                 </ul>
-              </li>
+              </li> ) }
             </ul>
             {/* Menú de usuario */}
             <ul className="navbar-nav ms-auto">
@@ -339,12 +350,12 @@ const NavBar = () => {
                   aria-labelledby="userDropdown"
                 >
                   <li>
-                    <Link to="/actualizar-datos" className="dropdown-item">
-                      <i className="fas fa-user-edit me-2"></i>Actualizar Datos
+                    <Link to="/actualziar-perfil" className="dropdown-item">
+                      <i className="fas fa-user-edit me-2"></i>Actualizar Perfil
                     </Link>
                   </li>
                   <li>
-                    <Link to="/cambiar-contraseña" className="dropdown-item">
+                    <Link to="/actualziar-clave" className="dropdown-item">
                       <i className="fas fa-key me-2"></i>Cambiar Contraseña
                     </Link>
                   </li>

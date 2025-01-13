@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
-
+import apiClient from "../Config/axiosConfig";
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -33,10 +32,10 @@ const Login = () => {
     if (!doValidation()) return;
 
     try {
-      const response = await axios.post(
-        "http://localhost:8080/auth/login", // Cambia esto por la URL de tu endpoint
+      const response = await apiClient.post(
+        "/auth/login", // Cambia esto por la URL de tu endpoint
         { email, password },
-        { withCredentials: true } // Permite que las cookies se envíen y reciban
+        
       );
 
       // Manejar respuesta exitosa

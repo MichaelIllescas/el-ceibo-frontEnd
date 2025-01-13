@@ -1,16 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import apiClient from "../Config/axiosConfig";
 import CountUp from "react-countup";
 import Header from "../Navbar/Header";
 import Footer from "../index/Footer";
 import GraficoIndex from "/src/index/Grafico"; // Asegúrate de que la ruta sea correcta
 
 function App() {
+  const [dashboardData, setDashboardData] = useState({
+    cantidadJugadores: 0,
+    cantidadSocios: 0,
+    recaudacionTotal: 0,
+    categoriasActivas: 0,
+    graficoData: [],
+  });
+
+  useEffect(() => {
+    // Llamada al backend para obtener datos
+    apiClient.get("/api/dashboard") // Cambia la URL si es necesario
+      .then((response) => {
+        setDashboardData(response.data);
+      })
+      .catch((error) => {
+        console.error("Error al obtener los datos del backend:", error);
+      });
+  }, []);
+
   return (
     <>
       <Header />
 
       <div className="mt-5 pt-1 pb-5">
-        <div className="container  mt-5 pt-5">
+        <div className="container mt-5 pt-5">
           <div className="row">
             {/* Columna de tarjetas */}
             <div className="col-lg-4">
@@ -23,7 +43,7 @@ function App() {
                         Cantidad de jugadores
                       </div>
                       <div className="h5 mb-0 font-weight-bold text-gray-800">
-                        <CountUp start={0} end={120} duration={2} />
+                        <CountUp start={0} end={dashboardData.cantidadJugadores} duration={2} />
                       </div>
                     </div>
                     <div className="col-auto">
@@ -42,7 +62,7 @@ function App() {
                         Cantidad de socios
                       </div>
                       <div className="h5 mb-0 font-weight-bold text-gray-800">
-                        <CountUp start={0} end={350} duration={1} />
+                        <CountUp start={0} end={dashboardData.cantidadSocios} duration={2} />
                       </div>
                     </div>
                     <div className="col-auto">
@@ -61,7 +81,7 @@ function App() {
                         Recaudación total
                       </div>
                       <div className="h5 mb-0 font-weight-bold text-gray-800">
-                        $<CountUp start={0} end={85000} duration={1} separator="," />
+                        $<CountUp start={0} end={dashboardData.recaudacionTotal} duration={2} separator="," />
                       </div>
                     </div>
                     <div className="col-auto">
@@ -80,7 +100,7 @@ function App() {
                         Categorías activas
                       </div>
                       <div className="h5 mb-0 font-weight-bold text-gray-800">
-                        <CountUp start={0} end={8} duration={1} />
+                        <CountUp start={0} end={dashboardData.categoriasActivas} duration={2} />
                       </div>
                     </div>
                     <div className="col-auto">
@@ -98,7 +118,7 @@ function App() {
                   <h6 className="m-0 font-weight-bold text-primary text-center">Resumen general</h6>
                 </div>
                 <div className="card-body">
-                  <GraficoIndex /> {/* Aquí se carga el gráfico */}
+                  <GraficoIndex data={dashboardData.graficoData} /> {/* Pasar datos al gráfico */}
                 </div>
               </div>
             </div>

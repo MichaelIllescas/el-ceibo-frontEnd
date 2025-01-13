@@ -1,11 +1,8 @@
 import React, { useState, useMemo } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import ExportToExcelButton from "./ExportToExcelButton"; 
 
-const TableGeneric = ({
-  titulo = "Título de la tabla",
-  data,
-  actions = [],
-}) => {
+const TableGeneric = ({ titulo = "Título de la tabla", data, actions = [] }) => {
   const [filterInput, setFilterInput] = useState(""); // Estado del filtro
   const [currentPage, setCurrentPage] = useState(1); // Estado de la página actual
   const [sortConfig, setSortConfig] = useState({ key: null, direction: "asc" }); // Estado de ordenamiento
@@ -13,7 +10,9 @@ const TableGeneric = ({
   const itemsPerPage = 10; // Elementos por página
 
   if (!data || data.length === 0) {
-    return <p className="text-center mt-3">No hay datos para mostrar.</p>;
+    return (
+      <p className="text-center mt-3 text-warning">No se encontraron datos disponibles.</p>
+    );
   }
 
   const columns = useMemo(() => Object.keys(data[0]), [data]);
@@ -92,7 +91,14 @@ const TableGeneric = ({
 
   return (
     <div className="container mt-5 p-3 bg-black text-white rounded">
-      <h3 className="h1">{titulo}</h3>
+     
+      <div className="d-flex justify-content-between align-items-center mb-3">
+    <h3 className="h1">{titulo}</h3>
+    <ExportToExcelButton data={filteredData} fileName="tabla_datos.xlsx" />
+</div>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <span>Total de elementos: {filteredData.length}</span>
+      </div>
       <div className="mb-3">
         <input
           type="text"
@@ -134,6 +140,7 @@ const TableGeneric = ({
                       key={index}
                       style={{ whiteSpace: "nowrap", cursor: "pointer" }}
                       onClick={() => handleSort(column)}
+                      title={`Ordenar por ${column}`}
                     >
                       {column}{" "}
                       {sortConfig.key === column ? (
@@ -185,7 +192,7 @@ const TableGeneric = ({
       </div>
       <div className="d-flex justify-content-between align-items-center mt-3">
         <button
-          className="btn btn-secondary"
+          className="btn btn-outline-light"
           onClick={() => handlePageChange(currentPage - 1)}
           disabled={currentPage === 1}
         >
@@ -195,7 +202,7 @@ const TableGeneric = ({
           Página {currentPage} de {totalPages}
         </span>
         <button
-          className="btn btn-secondary"
+          className="btn btn-outline-light"
           onClick={() => handlePageChange(currentPage + 1)}
           disabled={currentPage === totalPages}
         >
