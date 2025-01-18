@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import apiClient from "../Config/axiosConfig";
+import logo from '/src/assets/img/logo-el-ceibo.png';
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
@@ -57,7 +58,7 @@ const Login = () => {
       >
         <div className="text-center mb-3">
           <img
-            src="src/assets/img/logo-el-ceibo.png"
+            src={logo}
             alt="Logo"
             width="100"
             className="rounded-circle"
