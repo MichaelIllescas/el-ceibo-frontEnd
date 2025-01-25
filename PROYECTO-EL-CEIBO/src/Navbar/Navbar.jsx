@@ -5,6 +5,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import {jwtDecode} from "jwt-decode"; 
 import { getCookie } from "../Auth/cookieUtils";
 import apiClient from "../Config/axiosConfig";
+import logo from "/src/assets/img/logo-el-ceibo.png"
  
 const handleLogout = async () => {
   try {
@@ -40,7 +41,7 @@ const NavBar = () => {
         <div className="container">
           <Link to={"/index"} className="navbar-brand" href="#">
             <img
-              src="./src/assets/img/logo-el-ceibo.png"
+              src={logo}
               width="70"
               height="65"
               className="d-inline-block align-top"

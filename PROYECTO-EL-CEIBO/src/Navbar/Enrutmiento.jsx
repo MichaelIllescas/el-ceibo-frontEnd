@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import Login from "/src/index/Login";
-import Index from "/src/index/Index";
+import Login from "../Index/Login"
+import Index from "../index/Index";
 import VerCuotas from "../Cuotas/VerCuotas";
 import RegistrarCuota from "../Cuotas/ResgistroCuotas";
 import ActualizarCuotas from "../Cuotas/ActualizarCuotas";

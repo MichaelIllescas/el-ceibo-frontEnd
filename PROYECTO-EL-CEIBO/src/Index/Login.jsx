@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig";
-import logo from '/src/assets/img/logo-el-ceibo.png';
+import logo from '../assets/img/logo-el-ceibo.png';
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("email");
+    if (savedEmail) {
+      setEmail(savedEmail);
+      setRememberMe(true);
+    }
+  }, []);
 
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState);
@@ -27,26 +37,32 @@ const Login = () => {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault(); // Prevenir la recarga de la página
+    e.preventDefault();
 
-    // Validar campos antes de enviar la solicitud
     if (!doValidation()) return;
 
     try {
-      const response = await apiClient.post(
-        "/auth/login", // Cambia esto por la URL de tu endpoint
-        { email, password },
-        
-      );
+      const response = await apiClient.post("/auth/login", { email, password });
 
-      // Manejar respuesta exitosa
-      console.log("Login exitoso:", response.data);
-      // Redirige al usuario o realiza cualquier acción posterior al login
-      window.location.href = "/index"; // Redirigir a una página de dashboard
+      if (rememberMe) {
+        localStorage.setItem("email", email);
+      } else {
+        localStorage.removeItem("email");
+      }
+
+      window.location.href = "/index";
     } catch (error) {
-      // Manejar errores
-      console.error("Error durante el inicio de sesión:", error);
-      setErrorMessage("Error de inicio de sesión. Verifique sus credenciales.");
+      if (error.response) {
+        if (error.response.status === 401) {
+          setErrorMessage("Usuario o contraseña incorrectos.");
+        } else if (error.response.status === 500) {
+          setErrorMessage("Error al conectarse al servidor. Intente más tarde.");
+        } else {
+          setErrorMessage("Ocurrió un error inesperado.");
+        }
+      } else {
+        setErrorMessage("No se pudo conectar al servidor. Verifique su conexión a Internet.");
+      }
     }
   };
 
@@ -115,9 +131,11 @@ const Login = () => {
               type="checkbox"
               className="form-check-input"
               id="rememberMe"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
             />
             <label htmlFor="rememberMe" className="form-check-label">
-              Recordar en este dispositivo
+              Recordar email en este dispositivo
             </label>
           </div>
           <button type="submit" className="btn btn-primary w-100">
@@ -125,9 +143,51 @@ const Login = () => {
           </button>
         </form>
         <div className="text-center mt-3">
-          <a href="/" className="text-primary text-decoration-none">
+          <a
+            href="#"
+            className="text-primary text-decoration-none"
+            data-bs-toggle="modal"
+            data-bs-target="#forgotPasswordModal"
+          >
             ¿Olvidó su contraseña?
           </a>
+        </div>
+      </div>
+
+      {/* Modal */}
+      <div
+        className="modal fade"
+        id="forgotPasswordModal"
+        tabIndex="-1"
+        aria-labelledby="forgotPasswordModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title" id="forgotPasswordModalLabel">
+                Recuperar Contraseña
+              </h5>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body">
+              Debe contactarse con el directivo administrador de la institución para resetear su contraseña.
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
