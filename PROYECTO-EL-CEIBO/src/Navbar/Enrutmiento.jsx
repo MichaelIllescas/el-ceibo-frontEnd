@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import {jwtDecode} from "jwt-decode"; 
+import { getCookie } from "../Auth/cookieUtils";
 import Login from "../Index/Login"
 import Index from "../index/Index";
 import VerCuotas from "../Cuotas/VerCuotas";
@@ -30,16 +32,35 @@ import VerPerfil from "../Usuarios/VerPerfil";
 import UpdatePasswordForm from "../Usuarios/CambiarClave";
 
 const Enrrutado = () => {
+
+   // Obtener el valor de la cookie "authToken"
+    const token = getCookie("authToken");
+
+    // Decodificar el token para obtener el rol del usuario
+    let role = null;
+    if (token) {
+      const decoded = jwtDecode(token); // Uso correcto de jwtDecode
+      role = decoded.role; // Ajusta según tu JWT
+    }
+
   return (
     <Routes>
       <Route path="/" element={<Login />} />
       <Route path="/index" element={<Index />} />
-      <Route path="/RegistarCategoria" element={<RegistrarCategoria />} />
+   
+      {role === "ADMIN" && (   <Route path="/RegistarCategoria" element={<RegistrarCategoria />} /> 
+      )}
+
       <Route path="/VerCategoria" element={<VerCategoria />} />
       <Route path="/ActualizarCategoria" element={<ActualizarCategoria />} />
       <Route path="/verCuotas" element={<VerCuotas />} />
-      <Route path="/registrarCuota" element={<RegistrarCuota />} />
+      
+      {role === "ADMIN" && ( <Route path="/registrarCuota" element={<RegistrarCuota />} /> 
+      )}
+
+      {role === "ADMIN" && ( 
       <Route path="/actualizarCuotas" element={<ActualizarCuotas />} />
+      )}
 
       <Route path="/VerSocios" element={<VerSocios />} />
       <Route path="/RegistrarSocio" element={<RegistrarSocio />} />
@@ -61,9 +82,14 @@ const Enrrutado = () => {
       <Route path="/recaudacionesAnuales" element={<GraficoRecaudaciones/>}></Route>
       <Route path="/recaudacionTrimestral" element={<VerRecaudacionesTrimestrales/>}></Route>
 
-      <Route path="/registrarUsuario" element={<RegistroUsuario/>}></Route>
-      <Route path="/verUsuarios" element={<VerUsuarios/>}></Route>
-      <Route path="/cambiar-estado-usuario" element={<CambioEstadoUsuario/>}></Route>
+      {role === "ADMIN" && ( <Route path="/registrarUsuario" element={<RegistroUsuario/>}></Route>
+      )}
+
+      {role === "ADMIN" && ( <Route path="/verUsuarios" element={<VerUsuarios/>}></Route>
+      )}
+
+      {role === "ADMIN" && ( <Route path="/cambiar-estado-usuario" element={<CambioEstadoUsuario/>}></Route>
+      )}
 
 
       <Route path="/actualziar-perfil" element={<VerPerfil/>}></Route>

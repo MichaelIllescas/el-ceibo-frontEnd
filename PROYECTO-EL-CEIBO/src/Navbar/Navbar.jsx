@@ -5,7 +5,9 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import {jwtDecode} from "jwt-decode"; 
 import { getCookie } from "../Auth/cookieUtils";
 import apiClient from "../Config/axiosConfig";
-import logo from "/src/assets/img/logo-el-ceibo.png"
+import logo from "/src/assets/img/logo-el-ceibo.png";
+import Documentacion from "../assets/Manual De Usuario.pdf";
+
  
 const handleLogout = async () => {
   try {
@@ -135,7 +137,7 @@ const NavBar = () => {
               </li>
 
                {/* Gestión de Cuotas */}
-               {role === "ADMIN" && (
+               
               <li className="nav-item dropdown">
                 <a
                   className="nav-link dropdown-toggle"
@@ -148,7 +150,7 @@ const NavBar = () => {
                   <i className="fas fa-file-invoice-dollar"></i> Cuotas
                 </a>
                 <ul className="dropdown-menu" aria-labelledby="cuotasDropdown">
-                  <li>
+                {role === "ADMIN" && ( <li>
                     <Link
                       to="/registrarCuota"
                       className="dropdown-item"
@@ -157,8 +159,8 @@ const NavBar = () => {
                       <i className="fas fa-plus-circle"></i> Registrar Tipo de
                       Cuota
                     </Link>
-                  </li>
-                  <li>
+                  </li>)}
+                  {role === "ADMIN" && ( <li>
                     <Link
                       to="/actualizarCuotas"
                       className="dropdown-item"
@@ -166,14 +168,14 @@ const NavBar = () => {
                     >
                       <i className="fas fa-edit"></i> Actualizar Montos
                     </Link>
-                  </li>
+                  </li>)}
                   <li>
                     <Link to="/verCuotas" className="dropdown-item" href="#">
                       <i className="fas fa-list"></i> Consultar Tipos de Cuotas
                     </Link>
                   </li>
                 </ul>
-              </li>)}
+              </li>
 
               {/* Gestión de Categorías */}
               {role === "ADMIN" && (<li className="nav-item dropdown">
@@ -360,6 +362,16 @@ const NavBar = () => {
                       <i className="fas fa-key me-2"></i>Cambiar Contraseña
                     </Link>
                   </li>
+                   {/* Aquí añades el enlace de "Descargar Documentación" */}
+                   <li>
+                    <a
+                       href={Documentacion} // Usa la ruta importada
+                      className="dropdown-item"
+                      download
+                    >
+                      <i className="fas fa-download me-2"></i> Descargar Manual de Usuario
+                    </a>
+                  </li>
                   <li className="d-flex justify-align-content-lg-center ">
                     <button
                       type="button"
@@ -373,7 +385,7 @@ const NavBar = () => {
                         textAlign: "center",
                       }}
                     >
-                      <i className="fas fa-sign-out-alt mx-3"></i>
+                      <i className="fas fa-sign-out-alt mx-3 my-1 "></i>
                       <span className="">Cerrar Sesión</span>
                     </button>
                   </li>
