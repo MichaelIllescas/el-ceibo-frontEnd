@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import "./RegistrarCategoria.css";
 import NavBar from "/src/NavBar/NavBar";
 import Footer from "/src/Index/Footer";
@@ -47,8 +47,8 @@ const RegistrarCategoria = () => {
   return (
     <>
       <NavBar />
-      <div className="mt-5 pt-3 d-flex justify-content-center">
-        <div className="bg-dark p-4 d-flex justify-content-center align-items-center rounded pt-5 mt-5 col-sm-10 col-lg-4">
+      <div className="container mt-5 pt-3 d-flex justify-content-center">
+        <div className="bg-dark p-3 d-flex justify-content-center align-items-center rounded pt-5 mt-5 col-sm-10 col-lg-4">
           <form
             onSubmit={handleSubmit}
             className="d-flex flex-column align-items-center"

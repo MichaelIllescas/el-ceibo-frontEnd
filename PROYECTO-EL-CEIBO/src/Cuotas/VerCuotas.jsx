@@ -1,8 +1,7 @@
 import Footer from "../Index/Footer";
 import Header from "../Navbar/Header";
 import TableGeneric from "/src/Components/TableGeneric";
-import { FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig"; 
 
 const VerCuotas = () => {
@@ -48,8 +47,8 @@ const VerCuotas = () => {
   return (
     <>
       <Header />
-      <div className="d-flex justify-content-center align-content-center pt-4">
-        <div className="mt-5 col-lg-7">
+      <div className="d-flex justify-content-center align-content-center pt-4 pb-5 mb-5">
+        <div className="mt-5 col-lg-7 pb-5 mb-5 px-1">
           {loading ? (
             <p className="text-center">Cargando cuotas...</p>
           ) : error ? (

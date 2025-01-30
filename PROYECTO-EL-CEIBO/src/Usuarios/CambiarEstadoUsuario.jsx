@@ -78,22 +78,25 @@ const CambioEstadoUsuario = () => {
   return (
     <>
       <Header />
-      <div className="pt-2 mt-2 vh-50">
-        <div className="d-flex justify-content-center align-content-center">
-          <div className="mt-5 col-lg-12 text-center">
-            {loading ? (
-              <p className="text-center">Cargando usuarios...</p>
-            ) : error ? (
-              <p className="text-center text-danger">{error}</p>
-            ) : (
-              <TableGeneric
-                titulo={"Estado de los Usuarios"}
-                data={usuariosConAcciones}
-              />
-            )}
+      <div className="pb-5 mb-5 px-1">
+        <div className=" pb-5 mb-5  pt-2 mt-2 vh-50">
+          <div className="d-flex justify-content-center align-content-center">
+            <div className="mt-5 col-lg-12 text-center">
+              {loading ? (
+                <p className="text-center">Cargando usuarios...</p>
+              ) : error ? (
+                <p className="text-center text-danger">{error}</p>
+              ) : (
+                <TableGeneric
+                  titulo={"Estado de los Usuarios"}
+                  data={usuariosConAcciones}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>
+     
 
       {/* Modal de confirmación */}
       <Modal show={showModal} onHide={() => setShowModal(false)}>

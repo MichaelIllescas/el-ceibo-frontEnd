@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import Header from "../Navbar/Header";
 import apiClient from "../Config/axiosConfig";
+import Footer from "../Index/Footer";
 
 const RegistrarSocio = () => {
   const [formData, setFormData] = useState({
@@ -87,9 +88,9 @@ const RegistrarSocio = () => {
   return (
     <>
       <Header />
-      <div className="pt-1">
-        <div className="mt-5 pt-3">
-          <div className="col-lg-8 col-md-8 bg-black shadow-sm p-4 rounded mx-auto mt-10 text-white mt-5 py-4">
+      <div className="pt-1 pb-5 mb-5">
+        <div className="mt-5 pt-3 pb-5 mb-3 px-1">
+          <div className=" col-lg-8 col-md-8 bg-black shadow-sm p-4 rounded mx-auto mt-10 text-white mt-5 py-4">
             <h3 className="text-center mb-3">Registrar Socio</h3>
             <form onSubmit={handleSubmit}>
               <div className="row g-3">
@@ -196,6 +197,7 @@ const RegistrarSocio = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

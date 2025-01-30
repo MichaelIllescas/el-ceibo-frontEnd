@@ -1,8 +1,7 @@
 import Footer from "../Index/Footer";
 import Header from "../Navbar/Header";
 import TableGeneric from "/src/Components/TableGeneric";
-import { FaEdit, FaTrash, FaInfoCircle } from "react-icons/fa";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig";
 
 const VerListadoGeneralPagos = () => {
@@ -49,14 +48,14 @@ const VerListadoGeneralPagos = () => {
   return (
     <>
       <Header />
-      <div className="d-flex justify-content-center align-content-center py-2">
-        <div className="mt-3  py-5">
+      <div className=" container d-flex justify-content-center align-content-center py-2">
+        <div className="mt-3 py-5 mb-5 pb-5">
           {loading ? (
             <p className="text-center">Cargando cuotas...</p>
           ) : error ? (
             <p className="text-center text-danger">{error}</p>
           ) : (
-            <div className="py-0 container">
+            <div>
               <TableGeneric
                 titulo={"Listado General de Pagos Registrados"}
                 data={pagos}

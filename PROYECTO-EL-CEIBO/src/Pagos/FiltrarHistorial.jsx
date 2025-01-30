@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig";
 import TableGeneric from "/src/components/TableGeneric";
 import Header from "../Navbar/Header";
@@ -60,7 +60,7 @@ const FiltrarHistorial = () => {
         tipo === "jugador"
           ? `/api/pagos/jugador/${id}`
           : `/api/pagos/socio/${id}`;
-      const response = await axios.get(url);
+      const response = await apiClient.get(url);
       setHistorial(
         response.data.map((item) => ({
           ...item,
@@ -86,9 +86,9 @@ const FiltrarHistorial = () => {
   return (
     <>
       <Header />
-      <div className="pt-3">
+      <div className="pt-3 pb-5">
         <div className="container my-5 py-5">
-          <div className="bg-black text-light p-4 rounded">
+          <div className="bg-black text-light p-3 rounded">
             <h2>Filtrar Historial de Pagos de Jugadores o Socios</h2>
             <div className="mb-3">
               <label className="form-label">Buscar jugador o socio:</label>

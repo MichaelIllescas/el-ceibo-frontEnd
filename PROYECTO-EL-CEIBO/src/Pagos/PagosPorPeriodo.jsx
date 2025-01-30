@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig"; 
 import TableGeneric from "/src/components/TableGeneric";
 import Header from "../Navbar/Header";
@@ -42,7 +42,7 @@ const VerPagosPorPeriodo = () => {
   return (
     <>
       <Header />
-      <div className="pt-3">
+      <div className="pt-3 pb-3">
         <div className="container my-5 py-5">
           <div className="bg-black text-light p-4 rounded">
             <h2>Historial de pagos por Fecha </h2>

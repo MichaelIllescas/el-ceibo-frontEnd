@@ -80,8 +80,8 @@ const CambioEstadoSocio = () => {
   return (
     <>
       <Header />
-      <div className="pt-2 mt-2 vh-50">
-      <div className="d-flex justify-content-center align-content-center">
+      <div className="pt-2 mt-2 vh-50 pb-5">
+      <div className="d-flex justify-content-center align-content-center pb-5 mb-2">
         <div className="mt-5 col-lg-12 text-center">
           {loading ? (
             <p className="text-center">Cargando socios...</p>

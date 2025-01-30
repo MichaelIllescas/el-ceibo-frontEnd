@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
 import TableGeneric from "/src/Components/TableGeneric";
@@ -81,7 +81,7 @@ const CambioEstadoJugador = () => {
     <>
       <Header />
       <div className="d-flex justify-content-center align-content-center py-5">
-        <div className="mt-5 col-lg-10">
+        <div className="mt-3 col-lg-10 pb-5 mb-3 px-1">
           {loading ? (
             <p className="text-center">Cargando jugadores...</p>
           ) : error ? (

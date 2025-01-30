@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig";
 import logo from '../assets/img/logo-el-ceibo.png';
+import Footer from "./Footer";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -43,21 +44,24 @@ const Login = () => {
 
     try {
       const response = await apiClient.post("/auth/login", { email, password });
-
       if (rememberMe) {
         localStorage.setItem("email", email);
       } else {
         localStorage.removeItem("email");
       }
-
-      window.location.href = "/index";
+      if (response.status==200){
+        window.location.href = "/index";
+      }
     } catch (error) {
       if (error.response) {
         if (error.response.status === 401) {
           setErrorMessage("Usuario o contraseña incorrectos.");
         } else if (error.response.status === 500) {
           setErrorMessage("Error al conectarse al servidor. Intente más tarde.");
-        } else {
+        } else if (error.response.status === 403) {
+          setErrorMessage("Usuario Inhabilitado.");
+        }  
+        else {
           setErrorMessage("Ocurrió un error inesperado.");
         }
       } else {
@@ -67,7 +71,7 @@ const Login = () => {
   };
 
   return (
-    <div className="min-vh-100 d-flex align-items-center justify-content-center shadow-lg">
+    <div className="min-vh-100 d-flex align-items-center justify-content-center shadow-lg pb-5 px-1">
       <div
         className="card p-4 shadow"
         style={{ maxWidth: "400px", width: "100%" }}
@@ -153,6 +157,7 @@ const Login = () => {
           </a>
         </div>
       </div>
+      <Footer/>
 
       {/* Modal */}
       <div

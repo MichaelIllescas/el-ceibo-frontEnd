@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import Header from "../Navbar/Header";
 import TableGeneric from "/src/Components/TableGeneric";
-import { FaEdit } from "react-icons/fa";
 import apiClient from "../Config/axiosConfig";
 import ActualizarSocio from "./ActualizarSocio";
+import Footer from "../Index/Footer";
 
 function VerSocios() {
   const [socios, setSocios] = useState([]);
@@ -60,9 +60,9 @@ function VerSocios() {
   return (
     <>
       <Header />
-      <div className="container mt-4 mx-auto pt-3">
+      <div className="container mt-4 mx-auto pt-3 pb-5">
         <div
-          className="d-flex flex-column align-items-center justify-content-start"
+          className="d-flex flex-column align-items-center justify-content-start pb-5"
           style={{
             marginTop: "20px", // Baja el contenedor del nav
           }}
@@ -86,6 +86,7 @@ function VerSocios() {
           </div>
         </div>
       </div>
+      <Footer/>
 
       {/* Modal ActualizarSocio */}
       {showModal && socioId && (

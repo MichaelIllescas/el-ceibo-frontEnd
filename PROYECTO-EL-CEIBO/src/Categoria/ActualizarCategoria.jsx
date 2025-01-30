@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Header from "../Navbar/Header";
 import Footer from "/src/Index/Footer";
 import apiClient from "../Config/axiosConfig"; 
@@ -96,8 +96,8 @@ const ActualizarCategoria = () => {
   return (
     <>
       <Header />
-      <div className="mt-5 pt-3">
-        <div className="container mt-5 colg-sm-12 p-3 rounded col-lg-4 bg-dark text-light">
+      <div className="mt-5 pt-3 pb-5 mb-5">
+        <div className="container mt-5 colg-sm-12 p-3 rounded col-lg-4 bg-dark text-light mb-5">
           <h3 className="text-center mb-4">Actualizar Categoría</h3>
           {loading ? (
             <p className="text-center">Cargando categorías...</p>

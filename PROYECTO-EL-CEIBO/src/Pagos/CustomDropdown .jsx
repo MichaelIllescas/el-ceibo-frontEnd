@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const CustomDropdown = ({ items, onSelect, labelKey, valueKey }) => {
   const [isOpen, setIsOpen] = useState(false);

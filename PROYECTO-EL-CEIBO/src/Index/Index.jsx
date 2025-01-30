@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig";
 import CountUp from "react-countup";
 import Header from "../Navbar/Header";
-import Footer from "../index/Footer";
+import Footer from "/src/index/Footer";
 import GraficoIndex from "/src/index/Grafico"; // Asegúrate de que la ruta sea correcta
 
 function App() {
@@ -29,8 +29,8 @@ function App() {
     <>
       <Header />
 
-      <div className="mt-5 pt-1 pb-5">
-        <div className="container mt-5 pt-5">
+      <div className="mt-3 pt-1 pb-5 mb-5">
+        <div className="container mt-5 pt-5 pb-5">
           <div className="row">
             {/* Columna de tarjetas */}
             <div className="col-lg-4">

@@ -286,7 +286,7 @@ const NavBar = () => {
                 >
                   <li>
                     <Link to={"/recaudacionesAnuales"} className="dropdown-item" >
-                      <i className="fas fa-eye"></i> Recaudaciones Menusales
+                      <i className="fas fa-eye"></i> Recaudaciones Anuales
                     </Link>
                   </li>
                   <li>

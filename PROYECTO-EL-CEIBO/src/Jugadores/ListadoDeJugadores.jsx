@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
@@ -51,9 +51,9 @@ const FiltrarJugadoresPorCategoria = () => {
   return (
     <>
       <Header />
-      <div className="pt-3">
+      <div className="pt-3 pb-5">
         <div className="container my-5 py-5">
-          <div className="bg-black text-light p-4 rounded">
+          <div className="bg-black text-light p-3 rounded">
             <h2>Filtrar Jugadores</h2>
             <div className="mb-3">
               <label className="form-label">Seleccionar Categoría:</label>
@@ -86,7 +86,7 @@ const FiltrarJugadoresPorCategoria = () => {
                 ]}
               />
             ) : (
-              <p>No hay jugadores disponibles para esta categoría.</p>
+              <p className="mt-5">No hay jugadores disponibles para esta categoría.</p>
             )}
           </div>
         </div>

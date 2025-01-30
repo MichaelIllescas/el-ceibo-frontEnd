@@ -49,9 +49,9 @@ const RegisterFeeForm = () => {
   return (
     <>
       <Header />
-      <div className="mt-5 pt-3 col-lg-4 col-sm-10 d-flex m-auto">
+      <div className="container mt-5 pt-3 col-lg-4 col-sm-10 d-flex m-auto">
         <form
-          className="container mt-5 p-3 bg-dark border rounded shadow-lg text-light"
+          className=" mt-5 p-3 bg-dark border rounded shadow-lg text-light"
           onSubmit={handleSubmit}
         >
           <h4 className="text-center mb-4">Registro de Cuota</h4>
