@@ -1,11 +1,10 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import {jwtDecode} from "jwt-decode"; 
 import { getCookie } from "../Auth/cookieUtils";
 import apiClient from "../Config/axiosConfig";
-import logo from "/src/assets/img/logo-el-ceibo.png";
+import logo from "../assets/img/logo-el-ceibo.png";
 import Documentacion from "../assets/Manual De Usuario.pdf";
 
  
@@ -14,17 +13,21 @@ const handleLogout = async () => {
     // 1. Informar al servidor sobre el cierre de sesión
     await apiClient.post("/auth/logout");
 
-    // 2. Eliminar el token del almacenamiento local (si es que lo usas)
+    // 2. Eliminar el token del almacenamiento local y de sesión
     localStorage.removeItem("authToken");
     sessionStorage.removeItem("authToken");
 
-    // 3. Redirigir al usuario a la página de inicio de sesión
+    // 3. Eliminar la cookie estableciendo su fecha de expiración en el pasado
+    document.cookie = "authToken=; path=/; domain=.imperial-net.com; expires=Thu, 01 Jan 1970 00:00:00 UTC; Secure; HttpOnly";
+
+    // 4. Redirigir al usuario a la página de inicio de sesión
     window.location.href = "/";
   } catch (error) {
     console.error("Error al cerrar sesión:", error);
     alert("Ocurrió un error al intentar cerrar la sesión. Inténtalo nuevamente.");
   }
 };
+
 
 const NavBar = () => {
     // Obtener el valor de la cookie "authToken"

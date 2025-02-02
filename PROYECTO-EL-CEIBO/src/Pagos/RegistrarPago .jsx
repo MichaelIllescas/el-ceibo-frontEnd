@@ -95,7 +95,19 @@ const RegistrarPago = () => {
   // Mostrar el modal
   const handleAbrirModal = (e) => {
     e.preventDefault();
+
+    if (!personaSeleccionada) {
+      setMensaje("Debe seleccionar un jugador o socio antes de continuar.");
+      return;
+    }
+
     setMostrarModal(true);
+  };
+
+  const handleResetSeleccion = () => {
+    setPersonaSeleccionada(null);
+    setPago({ ...pago, jugadorId: null, socioId: null });
+    setFiltroNombre("");
   };
 
   // Cerrar el modal
@@ -165,20 +177,35 @@ const RegistrarPago = () => {
 
                   <div className="mb-3">
                     <label className="form-label">Buscar {filtroTipo}</label>
-                    <input
-                      type="text"
-                      className="form-control w-100"
-                      placeholder={`Buscar ${filtroTipo}...`}
-                      value={filtroNombre}
-                      onChange={(e) => {
-                        setFiltroNombre(e.target.value);
-                        setMenuVisible(true);
-                      }}
-                      onFocus={() => setMenuVisible(true)}
-                      onBlur={() =>
-                        setTimeout(() => setMenuVisible(false), 200)
-                      }
-                    />
+                    <div className="d-flex align-items-center">
+                      <input
+                        type="text"
+                        className="form-control w-100"
+                        placeholder={`Buscar ${filtroTipo}...`}
+                        value={filtroNombre}
+                        onChange={(e) => {
+                          if (!personaSeleccionada) {
+                            setFiltroNombre(e.target.value);
+                            setMenuVisible(true);
+                          }
+                        }}
+                        onFocus={() => setMenuVisible(true)}
+                        onBlur={() =>
+                          setTimeout(() => setMenuVisible(false), 200)
+                        }
+                        disabled={!!personaSeleccionada}
+                      />
+
+                      {personaSeleccionada && (
+                        <button
+                          className="btn btn-danger ms-2"
+                          onClick={handleResetSeleccion}
+                        >
+                          X
+                        </button>
+                      )}
+                    </div>
+
                     {menuVisible && personasFiltradas.length > 0 && (
                       <ul className="dropdown-menu show">
                         {personasFiltradas.map((persona) => (
