@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import apiClient from "../Config/axiosConfig";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
@@ -14,7 +14,7 @@ const RegistrarPago = () => {
   });
 
   const [cuotas, setCuotas] = useState([]);
-  const [personas, setPersonas] = useState([]); // Contendrá tanto jugadores como socios
+  const [personas, setPersonas] = useState([]);
   const [personasFiltradas, setPersonasFiltradas] = useState([]);
   const [filtroNombre, setFiltroNombre] = useState("");
   const [filtroTipo, setFiltroTipo] = useState("jugador");
@@ -22,9 +22,12 @@ const RegistrarPago = () => {
   const [personaSeleccionada, setPersonaSeleccionada] = useState(null);
   const [cuotaSeleccionada, setCuotaSeleccionada] = useState(null);
   const [mensaje, setMensaje] = useState("");
-  const [mostrarModal, setMostrarModal] = useState(false); // Estado para el modal
+  const [mostrarModal, setMostrarModal] = useState(false);
 
-  // Obtener cuotas
+  const isSubmittingRef = useRef(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const requestAbortController = useRef(null);
+
   useEffect(() => {
     const fetchCuotas = async () => {
       try {
@@ -37,7 +40,6 @@ const RegistrarPago = () => {
     fetchCuotas();
   }, []);
 
-  // Obtener jugadores y socios
   useEffect(() => {
     const fetchPersonas = async () => {
       try {
@@ -50,7 +52,6 @@ const RegistrarPago = () => {
     fetchPersonas();
   }, []);
 
-  // Filtrar personas por tipo y nombre
   useEffect(() => {
     if (filtroNombre.trim() === "") {
       setPersonasFiltradas([]);
@@ -92,31 +93,29 @@ const RegistrarPago = () => {
     setMenuVisible(false);
   };
 
-  // Mostrar el modal
   const handleAbrirModal = (e) => {
     e.preventDefault();
-
     if (!personaSeleccionada) {
       setMensaje("Debe seleccionar un jugador o socio antes de continuar.");
       return;
     }
-
     setMostrarModal(true);
   };
 
-  const handleResetSeleccion = () => {
-    setPersonaSeleccionada(null);
-    setPago({ ...pago, jugadorId: null, socioId: null });
-    setFiltroNombre("");
-  };
-
-  // Cerrar el modal
   const handleCerrarModal = () => {
     setMostrarModal(false);
   };
 
-  // Confirmar el envío dentro del modal
   const handleConfirmarPago = async () => {
+    if (isSubmittingRef.current) return; // Bloquea intentos múltiples
+    isSubmittingRef.current = true;
+    setIsSubmitting(true); // Deshabilita el botón visualmente
+
+    if (requestAbortController.current) {
+      requestAbortController.current.abort();
+    }
+    requestAbortController.current = new AbortController();
+
     const pagoRequest = {
       fechaPago: pago.fechaPago,
       monto: pago.monto,
@@ -127,10 +126,11 @@ const RegistrarPago = () => {
     };
 
     try {
-      const response = await apiClient.post("/api/pagos", pagoRequest);
-      setMensaje("Pago registrado exitosamente.");
+      await apiClient.post("/api/pagos", pagoRequest, {
+        signal: requestAbortController.current.signal,
+      });
 
-      // Restablecer el formulario
+      setMensaje("Pago registrado exitosamente.");
       setPago({
         fechaPago: "",
         descripcion: "",
@@ -143,11 +143,25 @@ const RegistrarPago = () => {
       setCuotaSeleccionada(null);
       setFiltroNombre("");
 
-      setMostrarModal(false); // Cerrar el modal después de confirmar
+      setMostrarModal(false);
     } catch (error) {
-      setMensaje("Error al registrar el pago.");
+      if (error.name === "AbortError") {
+        console.warn("Solicitud cancelada.");
+      } else {
+        setMensaje("Error al registrar el pago.");
+      }
+    } finally {
+      isSubmittingRef.current = false;
+      setTimeout(() => setIsSubmitting(false), 300);
+      requestAbortController.current = null;
     }
   };
+  const handleResetSeleccion = () => {
+    setPersonaSeleccionada(null);
+    setPago({ ...pago, jugadorId: null, socioId: null });
+    setFiltroNombre("");
+  };
+
 
   return (
     <>
@@ -304,6 +318,7 @@ const RegistrarPago = () => {
                       <strong>Descripción:</strong>{" "}
                       {pago.descripcion || "No ingresada"}
                     </p>
+                    
                   </div>
                 </div>
               </div>
@@ -331,28 +346,12 @@ const RegistrarPago = () => {
             <div className="modal-content">
               <div className="modal-header">
                 <h5 className="modal-title">Confirmar Pago</h5>
-                <button
-                  type="button"
-                  className="btn-close"
-                  onClick={handleCerrarModal}
-                ></button>
+                <button type="button" className="btn-close" onClick={handleCerrarModal}></button>
               </div>
               <div className="modal-body">
-                <p>
-                  <strong>Fecha de Pago:</strong>{" "}
-                  {pago.fechaPago || "No seleccionada"}
-                </p>
-                <p>
-                  <strong>Descripción:</strong>{" "}
-                  {pago.descripcion || "No ingresada"}
-                </p>
-                <p>
-                  <strong>Monto:</strong> ${pago.monto}
-                </p>
-                <p>
-                  <strong>Cuota:</strong>{" "}
-                  {cuotaSeleccionada?.tipo || "No seleccionada"}
-                </p>
+                <p><strong>Fecha de Pago:</strong> {pago.fechaPago || "No seleccionada"}</p>
+                <p><strong>Monto:</strong> ${pago.monto}</p>
+                <p><strong>Cuota:</strong> {cuotaSeleccionada?.tipo || "No seleccionada"}</p>
                 {personaSeleccionada && (
                   <>
                     <p>
@@ -368,27 +367,24 @@ const RegistrarPago = () => {
                 )}
               </div>
               <div className="modal-footer">
-                <button
-                  className="btn btn-secondary"
-                  onClick={handleCerrarModal}
-                >
+                <button className="btn btn-secondary" onClick={handleCerrarModal}>
                   Cancelar
                 </button>
-                <button
-                  className="btn btn-primary"
-                  onClick={handleConfirmarPago}
-                >
-                  Confirmar
+                <button 
+                  className="btn btn-primary" 
+                  onClick={handleConfirmarPago} 
+                  disabled={isSubmitting}>
+                  {isSubmitting ? "Registrando..." : "Confirmar"}
                 </button>
               </div>
             </div>
           </div>
         </div>
       )}
-
       <Footer />
     </>
   );
 };
+
 
 export default RegistrarPago;
