@@ -33,8 +33,8 @@ const VerCategoria = () => {
   return (
     <>
       <Header />
-      <div className="d-flex justify-content-center align-content-center pt-4">
-        <div className="mt-5 col-lg-6">
+      <div className="d-flex justify-content-center align-content-center pt-4 pb-5 mb-5">
+        <div className="mt-5 col-lg-6 pb-5 mb-5">
           {loading ? (
             <p className="text-center">Cargando categorías...</p>
           ) : error ? (
