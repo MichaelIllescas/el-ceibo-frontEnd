@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import apiClient from "../Config/axiosConfig";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
+import DescargarComprobante from "../Components/ComprobantePagoPDF ";
 
 const RegistrarPago = () => {
   const [pago, setPago] = useState({
@@ -23,6 +24,8 @@ const RegistrarPago = () => {
   const [cuotaSeleccionada, setCuotaSeleccionada] = useState(null);
   const [mensaje, setMensaje] = useState("");
   const [mostrarModal, setMostrarModal] = useState(false);
+  const [pagoRegistrado, setPagoRegistrado] = useState(null); // Guardar el pago confirmado
+
 
   const isSubmittingRef = useRef(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -102,20 +105,16 @@ const RegistrarPago = () => {
     setMostrarModal(true);
   };
 
-  const handleCerrarModal = () => {
-    setMostrarModal(false);
-  };
-
   const handleConfirmarPago = async () => {
-    if (isSubmittingRef.current) return; // Bloquea intentos múltiples
+    if (isSubmittingRef.current) return;
     isSubmittingRef.current = true;
-    setIsSubmitting(true); // Deshabilita el botón visualmente
-
+    setIsSubmitting(true);
+  
     if (requestAbortController.current) {
       requestAbortController.current.abort();
     }
     requestAbortController.current = new AbortController();
-
+  
     const pagoRequest = {
       fechaPago: pago.fechaPago,
       monto: pago.monto,
@@ -123,38 +122,57 @@ const RegistrarPago = () => {
       cuota: { id: parseInt(pago.cuotaId) },
       jugador: pago.jugadorId ? { id: pago.jugadorId } : null,
       socio: pago.socioId ? { id: pago.socioId } : null,
+      
     };
-
+  
     try {
-      await apiClient.post("/api/pagos", pagoRequest, {
+      const response = await apiClient.post("/api/pagos", pagoRequest, {
         signal: requestAbortController.current.signal,
       });
-
-      setMensaje("Pago registrado exitosamente.");
-      setPago({
-        fechaPago: "",
-        descripcion: "",
-        cuotaId: "",
-        jugadorId: null,
-        socioId: null,
-        monto: 0,
+  
+      // Actualizar pagoRegistrado con la respuesta completa del backend
+      setPagoRegistrado({
+        id: response.data.id,
+        nombre: response.data.nombre,
+        apellido: response.data.apellido,
+        dni: response.data.dni,
+        categoria: response.data.categoria,
+        fechaPago: response.data.fechaPago,
+        monto: response.data.monto,
+        descripcion: response.data.descripcion,
+        tipo: response.data.tipo,
+        usuario_registro: response.data.usuario_registro,
       });
-      setPersonaSeleccionada(null);
-      setCuotaSeleccionada(null);
-      setFiltroNombre("");
-
-      setMostrarModal(false);
+  
+      setMensaje("Pago registrado exitosamente.");
     } catch (error) {
-      if (error.name === "AbortError") {
-        console.warn("Solicitud cancelada.");
-      } else {
-        setMensaje("Error al registrar el pago.");
-      }
+      setMensaje("Error al registrar el pago.");
+      console.log(error);
     } finally {
       isSubmittingRef.current = false;
       setTimeout(() => setIsSubmitting(false), 300);
       requestAbortController.current = null;
     }
+  };
+  
+  const handleCerrarModal = () => {
+    setMostrarModal(false);
+    setPagoRegistrado(null); // Limpiar comprobante al cerrar modal
+  
+    // Restablecer los campos del formulario a sus valores iniciales
+    setPago({
+      fechaPago: "",
+      descripcion: "",
+      cuotaId: "",
+      jugadorId: null,
+      socioId: null,
+      monto: 0,
+    });
+    setPersonaSeleccionada(null);
+    setCuotaSeleccionada(null);
+    setFiltroNombre("");
+    setPersonasFiltradas([]);
+    setMensaje("");
   };
   const handleResetSeleccion = () => {
     setPersonaSeleccionada(null);
@@ -323,12 +341,6 @@ const RegistrarPago = () => {
                 </div>
               </div>
 
-              {mensaje && (
-                <p className="mt-3 mx-4 alert alert-info text-center">
-                  {mensaje}
-                </p>
-              )}
-
               <div className="text-center">
                 <button type="submit" className="btn btn-primary mt-1">
                   Registrar Pago
@@ -339,8 +351,8 @@ const RegistrarPago = () => {
         </div>
       </div>
 
-      {/* Modal */}
-      {mostrarModal && (
+     {/* Modal */}
+     {mostrarModal && (
         <div className="modal d-block" tabIndex="-1">
           <div className="modal-dialog">
             <div className="modal-content">
@@ -354,35 +366,41 @@ const RegistrarPago = () => {
                 <p><strong>Cuota:</strong> {cuotaSeleccionada?.tipo || "No seleccionada"}</p>
                 {personaSeleccionada && (
                   <>
-                    <p>
-                      <strong>Nombre:</strong> {personaSeleccionada.nombre}
-                    </p>
-                    <p>
-                      <strong>Apellido:</strong> {personaSeleccionada.apellido}
-                    </p>
-                    <p>
-                      <strong>Dni:</strong> {personaSeleccionada.dni}
-                    </p>
+                    <p><strong>Nombre:</strong> {personaSeleccionada.nombre}</p>
+                    <p><strong>Apellido:</strong> {personaSeleccionada.apellido}</p>
+                    <p><strong>DNI:</strong> {personaSeleccionada.dni}</p>
                   </>
                 )}
               </div>
+              {mensaje && (
+                <p className="mt-3 mx-4 alert alert-info text-center">
+                  {mensaje}
+                </p>
+              )}
               <div className="modal-footer">
-                <button className="btn btn-secondary" onClick={handleCerrarModal}>
-                  Cancelar
-                </button>
-                <button 
-                  className="btn btn-primary" 
-                  onClick={handleConfirmarPago} 
-                  disabled={isSubmitting}>
-                  {isSubmitting ? "Registrando..." : "Confirmar"}
-                </button>
+                <button className="btn btn-secondary" onClick={handleCerrarModal}>Cerrar</button>
+                
+                {pagoRegistrado ? (
+                  <div className="text-center">
+                    <button className="btn">
+                      <DescargarComprobante pago={pagoRegistrado} />
+                    </button>
+                    
+                  </div>
+                ) : (
+                  <button className="btn btn-primary" onClick={handleConfirmarPago} disabled={isSubmitting}>
+                    {isSubmitting ? "Registrando..." : "Confirmar"}
+                  </button>
+                )}
+                       
               </div>
             </div>
           </div>
         </div>
       )}
+
       <Footer />
-    </>
+      </>
   );
 };
 

@@ -1,28 +1,28 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig"; 
 import TableGeneric from "/src/components/TableGeneric";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
+import DescargarComprobante from "../Components/ComprobantePagoPDF ";
 
 const VerPagosPorPeriodo = () => {
   const [diaSeleccionado, setDiaSeleccionado] = useState("");
   const [mesSeleccionado, setMesSeleccionado] = useState("");
   const [añoSeleccionado, setAñoSeleccionado] = useState("");
   const [pagos, setPagos] = useState([]);
+  const [pagosConBoton, setPagosConBoton] = useState([]); // Estado con la columna agregada
   const [loading, setLoading] = useState(false);
 
   // Función para obtener los pagos según los filtros seleccionados
   const fetchPagos = async () => {
     setLoading(true);
     try {
-      // Construimos la URL con los parámetros optativos
       let url = "/api/pagos/por-periodo?";
       if (añoSeleccionado) url += `año=${añoSeleccionado}&`;
       if (mesSeleccionado) url += `mes=${mesSeleccionado}&`;
       if (diaSeleccionado) url += `dia=${diaSeleccionado}`;
 
-      // Eliminar el último "&" si quedara colgando
-      url = url.endsWith("&") ? url.slice(0, -1) : url;
+      url = url.endsWith("&") ? url.slice(0, -1) : url; // Eliminar el último "&" si queda
 
       const response = await apiClient.get(url);
       setPagos(response.data);
@@ -33,11 +33,22 @@ const VerPagosPorPeriodo = () => {
     }
   };
 
-  // Actualiza la lista de pagos automáticamente cada vez que cambian los filtros
+  // Actualiza la lista de pagos automáticamente cuando cambian los filtros
   useEffect(() => {
     fetchPagos();
-    // eslint-disable-next-line
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [diaSeleccionado, mesSeleccionado, añoSeleccionado]);
+
+  // Agregar la columna de "Descargar Comprobante" después de recibir los datos
+  useEffect(() => {
+    if (pagos.length > 0) {
+      const pagosConDescarga = pagos.map((pago) => ({
+        ...pago,
+        Comprobante: <DescargarComprobante pago={pago} />,
+      }));
+      setPagosConBoton(pagosConDescarga);
+    }
+  }, [pagos]);
 
   return (
     <>
@@ -45,7 +56,7 @@ const VerPagosPorPeriodo = () => {
       <div className="pt-3 pb-3">
         <div className="container my-5 py-5">
           <div className="bg-black text-light p-4 rounded">
-            <h2>Historial de pagos por Fecha </h2>
+            <h2>Historial de pagos por Fecha</h2>
 
             {/* Selector de Año */}
             <div className="mb-3">
@@ -101,12 +112,10 @@ const VerPagosPorPeriodo = () => {
             {/* Tabla de Pagos */}
             {loading ? (
               <p>Cargando pagos...</p>
-            ) : pagos.length > 0 ? (
+            ) : pagosConBoton.length > 0 ? (
               <TableGeneric
                 titulo="Pagos Filtrados"
-                data={pagos} 
-         
-                actions={[]}
+                data={pagosConBoton} // 🔥 Ahora los datos incluyen el botón de descarga
               />
             ) : (
               <p>No hay pagos disponibles para el período seleccionado.</p>

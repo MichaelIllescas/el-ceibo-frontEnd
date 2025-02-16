@@ -1,27 +1,25 @@
+import { useState, useEffect } from "react";
 import Footer from "../Index/Footer";
 import Header from "../Navbar/Header";
 import TableGeneric from "/src/Components/TableGeneric";
-import { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig";
+import DescargarComprobante from "../Components/ComprobantePagoPDF ";
 
 const VerListadoGeneralPagos = () => {
   const [pagos, setPagos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const actions = [];
-
   useEffect(() => {
     const fetchPagos = async () => {
       try {
-        const response = await apiClient.get(
-          "/api/pagos/listadoGeneralPagos"
-        );
+        const response = await apiClient.get("/api/pagos/listadoGeneralPagos");
 
-        // Formatear fechas para mostrar en formato dd/MM/yyyy
+        // Formatear fechas y agregar la columna con el botón de descarga
         const formattedPagos = response.data.map((cuota) => ({
           ...cuota,
           fechaPago: formatDate(cuota.fechaPago),
+          Comprobante: <DescargarComprobante pago={cuota} />, // Agregamos el botón aquí
         }));
 
         setPagos(formattedPagos);
@@ -48,20 +46,17 @@ const VerListadoGeneralPagos = () => {
   return (
     <>
       <Header />
-      <div className=" container d-flex justify-content-center align-content-center py-2">
+      <div className="container d-flex justify-content-center align-content-center py-2">
         <div className="mt-3 py-5 mb-5 pb-5">
           {loading ? (
             <p className="text-center">Cargando cuotas...</p>
           ) : error ? (
             <p className="text-center text-danger">{error}</p>
           ) : (
-            <div>
-              <TableGeneric
-                titulo={"Listado General de Pagos Registrados"}
-                data={pagos}
-                actions={actions}
-              />
-            </div>
+            <TableGeneric
+              titulo={"Listado General de Pagos Registrados"}
+              data={pagos} // 🔥 Ahora los datos incluyen el botón sin modificar TableGeneric
+            />
           )}
         </div>
       </div>

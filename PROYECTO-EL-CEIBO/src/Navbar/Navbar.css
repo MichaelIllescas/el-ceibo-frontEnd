@@ -10,6 +10,7 @@
   margin-top: -0.125rem; /* Ajuste fino para la alineación */
   margin-left: 0;
   display: none; /* Por defecto, los submenús están ocultos */
+  background-color: #40c8da;
 }
 
 .dropdown-submenu:hover > .dropdown-menu {

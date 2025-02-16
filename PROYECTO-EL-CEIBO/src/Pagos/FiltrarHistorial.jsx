@@ -1,35 +1,35 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import apiClient from "../Config/axiosConfig";
 import TableGeneric from "/src/components/TableGeneric";
 import Header from "../Navbar/Header";
 import Footer from "../Index/Footer";
+import DescargarComprobante from "../Components/ComprobantePagoPDF ";
 
 const FiltrarHistorial = () => {
-  const [filtro, setFiltro] = useState(""); // Texto ingresado en el input
-  const [personas, setPersonas] = useState([]); // Lista combinada de jugadores y socios
-  const [personasFiltradas, setPersonasFiltradas] = useState([]); // Personas filtradas
-  const [historial, setHistorial] = useState([]); // Historial de pagos de la persona seleccionada
-  const [personaSeleccionada, setPersonaSeleccionada] = useState(null); // Persona seleccionada
+  const [filtro, setFiltro] = useState("");
+  const [personas, setPersonas] = useState([]);
+  const [personasFiltradas, setPersonasFiltradas] = useState([]);
+  const [historial, setHistorial] = useState([]);
+  const [personaSeleccionada, setPersonaSeleccionada] = useState(null);
+  const [historialConBoton, setHistorialConBoton] = useState([]); 
 
   // Obtener jugadores y socios
   useEffect(() => {
     const fetchPersonas = async () => {
       try {
-        const jugadoresResponse = await apiClient.get(
-          "/api/jugadores"
-        );
-        const sociosResponse = await apiClient.get(
-          "/api/socios"
-        );
-        // Combinar jugadores y socios en una sola lista
+        const jugadoresResponse = await apiClient.get("/api/jugadores");
+        const sociosResponse = await apiClient.get("/api/socios");
+
         const jugadores = jugadoresResponse.data.map((jugador) => ({
           ...jugador,
           tipo: "jugador",
         }));
+
         const socios = sociosResponse.data.map((socio) => ({
           ...socio,
           tipo: "socio",
         }));
+
         setPersonas([...jugadores, ...socios]);
       } catch (error) {
         console.error("Error al obtener jugadores y socios:", error);
@@ -61,17 +61,23 @@ const FiltrarHistorial = () => {
           ? `/api/pagos/jugador/${id}`
           : `/api/pagos/socio/${id}`;
       const response = await apiClient.get(url);
-      setHistorial(
-        response.data.map((item) => ({
-          ...item,
-          fechaPago: new Date(item.fechaPago).toLocaleDateString(), // Formato legible de fecha
-          monto: `$${item.monto.toFixed(2)}`, // Formato de moneda
-        }))
-      );
+
+      setHistorial(response.data); //  PASAMOS LOS DATOS SIN FORMATEAR
     } catch (error) {
       console.error("Error al obtener historial:", error);
     }
   };
+
+  // Agregar la columna del botón de descarga después de obtener el historial
+  useEffect(() => {
+    if (historial.length > 0) {
+      const historialConDescarga = historial.map((pago) => ({
+        ...pago,
+        Comprobante: <DescargarComprobante pago={pago} />,
+      }));
+      setHistorialConBoton(historialConDescarga);
+    }
+  }, [historial]);
 
   // Manejar selección de persona
   const handleSeleccionarPersona = (persona) => {
@@ -80,7 +86,7 @@ const FiltrarHistorial = () => {
     setFiltro(
       `${persona.nombre} ${persona.apellido} DNI N° ${persona.dni}`
     );
-    setPersonasFiltradas([]); // Oculta la lista filtrada
+    setPersonasFiltradas([]);
   };
 
   return (
@@ -129,11 +135,10 @@ const FiltrarHistorial = () => {
                     : "Socio"}
                   )
                 </h4>
-                {historial.length > 0 ? (
+                {historialConBoton.length > 0 ? (
                   <TableGeneric
                     titulo="Historial"
-                    data={historial}
-                    actions={[]}
+                    data={historialConBoton} // Ahora incluye la columna con el botón
                   />
                 ) : (
                   <p>No hay historial disponible para esta persona.</p>
