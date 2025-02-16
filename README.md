@@ -84,6 +84,6 @@ El código compilado estará en la carpeta `dist/`.
 Si tienes preguntas o sugerencias, puedes contactarme en:
 ✉️ Email: joni.illes@hotmail.com
 🐙 GitHub: MichaelIllescas
-🚀 ¡Gracias por visitar Ceibo! ⚽💙
+🚀 ¡Gracias por visitarme! ⚽💙
 
-Nos encontramos en proceso de desarrollo y mejoras de constantemente!
+Me encuentro en proceso de desarrollo y mejoras de constantemente!
